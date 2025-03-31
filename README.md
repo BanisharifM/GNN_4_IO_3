@@ -228,7 +228,4 @@ To extend the project with new features:
 
 ## References
 
-This implementation is based on research in GNN-based I/O performance analysis and bottleneck identification, including insights from:
 
-1. "Towards HPC I/O Performance Prediction Through Large-scale Log Analysis" (HPDC '20)
-2. "In-depth Pattern Analysis of I/O Behaviors for Adaptive Optimization" (HiPC '21)
