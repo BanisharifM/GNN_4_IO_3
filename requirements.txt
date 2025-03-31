@@ -1,0 +1,15 @@
+numpy
+pandas
+matplotlib
+hydra-core
+python-dotenv
+torch>=1.9.0
+torch-geometric>=2.0.0
+torch-scatter
+torch-sparse
+networkx
+shap
+scikit-learn
+ray[tune]
+tensorboard
+tqdm

@@ -1,0 +1,9 @@
+# config/dev.yaml
+data:
+  path: "${oc.env:DATA_PATH}"  # Use oc.env to reference the environment variable
+  files:
+    sample_100: "sample_train_100.csv"
+    sample_total: "sample_train_total.csv"
+
+model:
+  checkpoint_dir: "${oc.env:MODEL_PATH}"  # Use oc.env to reference the environment variable

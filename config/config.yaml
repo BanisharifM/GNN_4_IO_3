@@ -1,0 +1,43 @@
+defaults:
+  - hyperparameters: default  # Use the 'default' hyperparameters by default
+  - dev  # Use the 'dev' configuration by default
+
+# Data configuration
+data:
+  path: ${hydra:runtime.cwd}/../data
+  train_split: 0.7
+  val_split: 0.15
+  files:
+    sample_100: sample_train_100.csv
+    mutual_information: mutual_information2.csv
+
+# Graph configuration
+graph:
+  mi_threshold: 0.3259  # 90th percentile threshold
+
+# GNN configuration
+gnn:
+  hidden_dim: 64
+  num_layers: 2
+  model_type: gcn  # Options: gcn, gat
+
+# Model configuration
+model:
+  checkpoint_dir: ${hydra:runtime.cwd}/../logs/checkpoints
+
+# SHAP configuration
+shap:
+  background_samples: 50
+  test_samples: 20
+  top_n: 10
+  save_dir: ${hydra:runtime.cwd}/../logs/shap
+
+# Logging configuration
+logs:
+  training_dir: ${hydra:runtime.cwd}/../logs/training
+  evaluation_dir: ${hydra:runtime.cwd}/../logs/evaluation
+  shap_dir: ${hydra:runtime.cwd}/../logs/shap
+
+# KNN configuration (for comparison)
+knn:
+  k: 10
