@@ -117,6 +117,9 @@ if __name__ == "__main__":
     parser.add_argument("--output_dir", type=str, required=True, help="Directory to save preprocessed data")
     parser.add_argument("--mi_threshold", type=float, default=0.3259, help="Threshold for mutual information")
     parser.add_argument("--sample_size", type=int, default=None, help="Number of samples to use (for testing)")
+    parser.add_argument("--use_advanced_feature_selection", type=bool, default=False)
+    parser.add_argument("--use_clustering", type=bool, default=False)
+
     
     args = parser.parse_args()
     
