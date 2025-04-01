@@ -175,3 +175,8 @@ cython_debug/
 *.pyc
 __pycache__/
 env/
+
+
+# Sample training dataset
+data/sample_train_total.csv
+data/split_data/*
