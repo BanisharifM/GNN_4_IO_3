@@ -111,6 +111,7 @@ class GNNRegressor(nn.Module):
         input_dim: int, 
         hidden_dim: int, 
         num_layers: int,
+        output_dim=1,
         dropout: float = 0.1,
         model_type: str = 'gcn'
     ):
@@ -141,6 +142,8 @@ class GNNRegressor(nn.Module):
         
         # Dropout
         self.dropout = nn.Dropout(dropout)
+
+        self.output_layer = nn.Linear(hidden_dim, output_dim)
         
         logger.info(f"Initialized GNN regressor with {model_type.upper()} backbone")
     
@@ -171,7 +174,8 @@ class GNNRegressor(nn.Module):
         x = self.dropout(x)
         x = self.fc2(x)
         
-        return x
+        return self.output_layer(x)
+
     
     def save_checkpoint(
         self, 
