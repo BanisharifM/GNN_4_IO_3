@@ -81,21 +81,21 @@ def train_model(
         edge_attr = torch.load(os.path.join(train_dir, 'edge_attr.pt'))
         
         # Load train data
-        train_data = torch.load(os.path.join(train_dir, 'train_data.pt'))
+        train_data = torch.load(os.path.join(train_dir, 'train_data.pt'), weights_only=False)
         if not train_data:  # If train_data.pt doesn't exist, try to create it from components
             node_features = torch.load(os.path.join(train_dir, 'node_features.pt'))
             targets = torch.load(os.path.join(train_dir, 'targets.pt'))
             train_data = create_dataset(node_features, targets, edge_index, edge_attr)
         
         # Load val data
-        val_data = torch.load(os.path.join(val_dir, 'val_data.pt'))
+        val_data = torch.load(os.path.join(val_dir, 'val_data.pt'), weights_only=False)
         if not val_data:  # If val_data.pt doesn't exist, try to create it from components
             node_features = torch.load(os.path.join(val_dir, 'node_features.pt'))
             targets = torch.load(os.path.join(val_dir, 'targets.pt'))
             val_data = create_dataset(node_features, targets, edge_index, edge_attr)
         
         # Load test data
-        test_data = torch.load(os.path.join(test_dir, 'test_data.pt'))
+        test_data = torch.load(os.path.join(test_dir, 'test_data.pt'), weights_only=False)
         if not test_data:  # If test_data.pt doesn't exist, try to create it from components
             node_features = torch.load(os.path.join(test_dir, 'node_features.pt'))
             targets = torch.load(os.path.join(test_dir, 'targets.pt'))
