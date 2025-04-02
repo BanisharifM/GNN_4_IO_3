@@ -12,7 +12,7 @@ mkdir -p ${OUTPUT_DIR}
 
 # Run the preprocess data script
 echo "Preprocessing ${SPLIT_TYPE} data from ${DATA_FILE}..."
-python scripts/01_preprocess_data.py \
+python  -W ignore scripts/01_preprocess_data.py \
     --data_file ${DATA_FILE} \
     --mi_file ${MI_FILE} \
     --output_dir ${OUTPUT_DIR} \
