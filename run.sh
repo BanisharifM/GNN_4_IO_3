@@ -4,13 +4,15 @@
 # 1. Complete experiments
 # 2. Individual steps within experiments
 # 3. Individual scripts with custom parameters
+# 4. Split-based workflow (split data first, then process each split separately)
 
 # Set default values for common parameters
-DATA_FILE="data/split_data/sample_100/train.csv"
+DATA_FILE="data/split_data/train.csv"
 MI_FILE="data/mutual_information2.csv"
 BASE_DIR="."
 HIDDEN_DIM=64
 NUM_LAYERS=2
+SAMPLE_DIR="sample_100"  # Directory for sample data splits
 
 # Create required directories
 mkdir -p ${BASE_DIR}/data/preprocessed
@@ -18,6 +20,7 @@ mkdir -p ${BASE_DIR}/logs/training
 mkdir -p ${BASE_DIR}/logs/shap
 mkdir -p ${BASE_DIR}/logs/hyperopt
 mkdir -p ${BASE_DIR}/logs/comparisons
+mkdir -p ${BASE_DIR}/data/split_data/${SAMPLE_DIR}
 
 # Function to display help message
 show_help() {
@@ -31,6 +34,7 @@ show_help() {
     echo "  --base-dir DIR         Base directory for the project (default: $BASE_DIR)"
     echo "  --hidden-dim NUM       Hidden dimension size (default: $HIDDEN_DIM)"
     echo "  --num-layers NUM       Number of GNN layers (default: $NUM_LAYERS)"
+    echo "  --sample-dir DIR       Directory for sample data splits (default: $SAMPLE_DIR)"
     echo "  -h, --help             Display this help message"
     echo ""
     echo "Commands for running complete experiments:"
@@ -44,12 +48,17 @@ show_help() {
     echo "  hyperopt              Run hyperparameter optimization"
     echo "  compare               Generate comparison report"
     echo "  all                   Run all experiments sequentially"
-    echo "  split-data            Split data into train/val/test sets"
     echo ""
     echo "  For experiment commands, you can specify a step number (1, 2, or 3) to run only that step:"
     echo "    Step 1: Preprocessing data"
     echo "    Step 2: Training model"
     echo "    Step 3: Analyzing bottlenecks"
+    echo ""
+    echo "Commands for split-based workflow:"
+    echo "  split-data            Split data into train/val/test sets"
+    echo "  process-splits EXP_NAME Process train/val/test splits separately for a specific experiment"
+    echo "                        EXP_NAME can be one of: baseline_gcn, baseline_gat, adv_feat_gcn,"
+    echo "                        adv_feat_parallel, cluster3_gcn, cluster5_gcn, combined"
     echo ""
     echo "Commands for running individual scripts:"
     echo "  run-script SCRIPT_NAME [SCRIPT_ARGS]  Run an individual script with custom arguments"
@@ -67,6 +76,8 @@ show_help() {
     echo "  $0 baseline-gcn 2                 # Run only step 2 (training) of baseline GCN model"
     echo "  $0 --hidden-dim 128 baseline-gat  # Run baseline GAT model with hidden dimension 128"
     echo "  $0 all                            # Run all experiments with default parameters"
+    echo "  $0 split-data                     # Split data into train/val/test sets"
+    echo "  $0 process-splits baseline_gcn    # Process train/val/test splits for baseline GCN"
     echo "  $0 run-script 01_preprocess_data --data_file data/split_data/train.csv --mi_file data/mutual_information2.csv --output_dir data/preprocessed/baseline_gcn"
     echo "                                    # Run 01_preprocess_data.py with custom arguments"
 }
@@ -94,6 +105,10 @@ while [[ $# -gt 0 ]]; do
             NUM_LAYERS="$2"
             shift 2
             ;;
+        --sample-dir)
+            SAMPLE_DIR="$2"
+            shift 2
+            ;;
         -h|--help)
             show_help
             exit 0
@@ -104,6 +119,11 @@ while [[ $# -gt 0 ]]; do
             shift 2
             SCRIPT_ARGS="$@"
             break
+            ;;
+        process-splits)
+            COMMAND="process-splits"
+            EXP_NAME="$2"
+            shift 2
             ;;
         *)
             COMMAND="$1"
@@ -119,12 +139,124 @@ run_split_data() {
     echo "=== Splitting Data ==="
     python ${BASE_DIR}/scripts/00_split_data.py \
         --data_file ${BASE_DIR}/data/sample_train_100.csv \
-        --output_dir ${BASE_DIR}/data/split_data \
+        --output_dir ${BASE_DIR}/data/split_data/${SAMPLE_DIR} \
         --train_ratio 0.7 \
         --val_ratio 0.15 \
         --test_ratio 0.15
     
-    echo "Data splitting completed."
+    echo "Data splitting completed. Files saved to ${BASE_DIR}/data/split_data/${SAMPLE_DIR}/"
+}
+
+# Function to process train/val/test splits separately for a specific experiment
+process_splits() {
+    local exp_name="$1"
+    local use_adv_feat="False"
+    local use_clustering="False"
+    local use_parallel="False"
+    local n_clusters=3
+    
+    # Set experiment-specific parameters
+    case ${exp_name} in
+        baseline_gcn|baseline_gat)
+            use_adv_feat="False"
+            use_clustering="False"
+            ;;
+        adv_feat_gcn)
+            use_adv_feat="True"
+            use_clustering="False"
+            ;;
+        adv_feat_parallel)
+            use_adv_feat="True"
+            use_clustering="False"
+            use_parallel="True"
+            ;;
+        cluster3_gcn)
+            use_adv_feat="False"
+            use_clustering="True"
+            n_clusters=3
+            ;;
+        cluster5_gcn)
+            use_adv_feat="False"
+            use_clustering="True"
+            n_clusters=5
+            ;;
+        combined)
+            use_adv_feat="True"
+            use_clustering="True"
+            use_parallel="True"
+            n_clusters=3
+            ;;
+        *)
+            echo "Error: Unknown experiment name '${exp_name}'"
+            exit 1
+            ;;
+    esac
+    
+    echo "=== Processing Splits for ${exp_name} ==="
+    
+    # Create output directories
+    mkdir -p ${BASE_DIR}/data/preprocessed/${exp_name}/train
+    mkdir -p ${BASE_DIR}/data/preprocessed/${exp_name}/val
+    mkdir -p ${BASE_DIR}/data/preprocessed/${exp_name}/test
+    
+    # Process training data
+    echo "Processing training data..."
+    python ${BASE_DIR}/scripts/01_preprocess_data.py \
+        --data_file ${BASE_DIR}/data/split_data/${SAMPLE_DIR}/train.csv \
+        --mi_file ${MI_FILE} \
+        --output_dir ${BASE_DIR}/data/preprocessed/${exp_name}/train \
+        --split_type train \
+        --use_advanced_feature_selection ${use_adv_feat} \
+        --use_clustering ${use_clustering} \
+        --use_parallel ${use_parallel} \
+        --n_clusters ${n_clusters}
+    
+    # Process validation data
+    echo "Processing validation data..."
+    python ${BASE_DIR}/scripts/01_preprocess_data.py \
+        --data_file ${BASE_DIR}/data/split_data/${SAMPLE_DIR}/val.csv \
+        --mi_file ${MI_FILE} \
+        --output_dir ${BASE_DIR}/data/preprocessed/${exp_name}/val \
+        --split_type val \
+        --use_advanced_feature_selection ${use_adv_feat} \
+        --use_clustering ${use_clustering} \
+        --use_parallel ${use_parallel} \
+        --n_clusters ${n_clusters}
+    
+    # Process test data
+    echo "Processing test data..."
+    python ${BASE_DIR}/scripts/01_preprocess_data.py \
+        --data_file ${BASE_DIR}/data/split_data/${SAMPLE_DIR}/test.csv \
+        --mi_file ${MI_FILE} \
+        --output_dir ${BASE_DIR}/data/preprocessed/${exp_name}/test \
+        --split_type test \
+        --use_advanced_feature_selection ${use_adv_feat} \
+        --use_clustering ${use_clustering} \
+        --use_parallel ${use_parallel} \
+        --n_clusters ${n_clusters}
+    
+    echo "Split processing completed for ${exp_name}."
+    
+    # If it's a baseline experiment, also run the training and analysis steps
+    if [[ ${exp_name} == baseline_gcn || ${exp_name} == baseline_gat ]]; then
+        local model_type=${exp_name#baseline_}  # Remove 'baseline_' prefix to get model type
+        
+        echo "Running training for ${exp_name}..."
+        python ${BASE_DIR}/scripts/02_train_model.py \
+            --preprocessed_dir ${BASE_DIR}/data/preprocessed/${exp_name} \
+            --output_dir ${BASE_DIR}/logs/training/${exp_name} \
+            --model_type ${model_type} \
+            --hidden_dim ${HIDDEN_DIM} \
+            --num_layers ${NUM_LAYERS}
+        
+        echo "Running bottleneck analysis for ${exp_name}..."
+        python ${BASE_DIR}/scripts/03_analyze_bottlenecks.py \
+            --preprocessed_dir ${BASE_DIR}/data/preprocessed/${exp_name} \
+            --model_dir ${BASE_DIR}/logs/training/${exp_name} \
+            --output_dir ${BASE_DIR}/logs/shap/${exp_name}
+        
+        echo "Complete workflow for ${exp_name} finished."
+    fi
 }
 
 # Function to run baseline GCN model
@@ -496,6 +628,9 @@ run_individual_script() {
 case ${COMMAND} in
     split-data)
         run_split_data
+        ;;
+    process-splits)
+        process_splits "${EXP_NAME}"
         ;;
     baseline-gcn)
         run_baseline_gcn "${STEP}"
