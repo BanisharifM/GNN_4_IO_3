@@ -104,8 +104,16 @@ def preprocess_data(
     logger.info("Extracting node features...")
     node_features = graph_constructor.get_node_features(data_df)
     
+    # Save node features tensor for 02_train_model.py
+    torch.save(node_features, os.path.join(output_dir, 'node_features.pt'))
+    logger.info(f"Saved node features tensor to {os.path.join(output_dir, 'node_features.pt')}")
+    
     # Extract targets
     targets = torch.tensor(data_df['tag'].values, dtype=torch.float)
+    
+    # Save targets tensor for 02_train_model.py
+    torch.save(targets, os.path.join(output_dir, 'targets.pt'))
+    logger.info(f"Saved targets tensor to {os.path.join(output_dir, 'targets.pt')}")
     
     # Create data list
     data_list = []

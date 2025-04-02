@@ -167,7 +167,7 @@ class IOCounterGraph:
         
     def export_graph_structure(self, output_dir: str):
         """
-        Export the graph structure to JSON format.
+        Export the graph structure to JSON, CSV, and PyTorch (.pt) formats.
         
         Args:
             output_dir: Directory to save the graph structure
@@ -215,6 +215,18 @@ class IOCounterGraph:
         nodes_csv = os.path.join(output_dir, "graph_nodes.csv")
         nodes_df.to_csv(nodes_csv, index=False)
         self.logger.info(f"Exported graph nodes to {nodes_csv}")
+        
+        # Save edge_index and edge_attr as PyTorch tensors with the exact filenames expected by 02_train_model.py
+        if self.edge_index is not None and self.edge_attr is not None:
+            # Save edge_index tensor
+            edge_index_file = os.path.join(output_dir, "edge_index.pt")
+            torch.save(self.edge_index, edge_index_file)
+            self.logger.info(f"Exported graph edges tensor to {edge_index_file}")
+            
+            # Save edge_attr tensor
+            edge_attr_file = os.path.join(output_dir, "edge_attr.pt")
+            torch.save(self.edge_attr, edge_attr_file)
+            self.logger.info(f"Exported graph edge attributes tensor to {edge_attr_file}")
 
 
 class IOGraphDataset:
