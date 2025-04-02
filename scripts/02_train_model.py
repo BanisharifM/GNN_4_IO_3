@@ -20,7 +20,8 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.models import GNNRegressor
+# from src.models import GNNRegressor
+from src.models.gnn import GNNRegressor
 
 # Set up logging
 logging.basicConfig(
