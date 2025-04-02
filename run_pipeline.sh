@@ -2,8 +2,8 @@
 # Master script to run the entire pipeline
 
 # Set variables
-DATA_DIR="/path/to/data"
-PREPROCESSED_DIR="/path/to/preprocessed"
+DATA_DIR="data"
+PREPROCESSED_DIR="data/preprocessed"
 MODEL_DIR="/path/to/model"
 HYPEROPT_DIR="/path/to/hyperopt_results"
 SHAP_DIR="/path/to/shap_results"
