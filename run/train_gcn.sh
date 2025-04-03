@@ -9,6 +9,7 @@ OUTPUT_DIR="logs/training/baseline_gcn"
 MODEL_TYPE="gcn"
 HIDDEN_DIM=64
 NUM_LAYERS=2
+RESUME_TRAINING=true
 
 # Create output directory
 mkdir -p ${OUTPUT_DIR}
@@ -23,6 +24,7 @@ python -W ignore scripts/02_train_model.py \
     --model_type ${MODEL_TYPE} \
     --hidden_dim ${HIDDEN_DIM} \
     --num_layers ${NUM_LAYERS} \
-    --use_split_dirs True
+    --use_split_dirs True \
+    --resume_training ${RESUME_TRAINING}
 
 echo "Training completed. Model saved to ${OUTPUT_DIR}/"

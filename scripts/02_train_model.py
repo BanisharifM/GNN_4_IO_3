@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Step 2: Train GNN model with split-based workflow support
+# Step 2: Train GNN model with resume functionality and single checkpoint
 
 import os
 import argparse
@@ -35,11 +35,12 @@ def train_model(
     model_type='gcn',
     learning_rate=0.001,
     batch_size=32,
-    epochs=100,
+    epochs=15,
     dropout=0.1,
     early_stopping_patience=10,
     device=None,
-    use_split_dirs=False
+    use_split_dirs=False,
+    resume_training=True
 ):
     """
     Train GNN model using preprocessed data.
@@ -60,6 +61,7 @@ def train_model(
         early_stopping_patience (int): Patience for early stopping
         device (str): Device to use ('cuda' or 'cpu')
         use_split_dirs (bool): Whether to use split-based workflow
+        resume_training (bool): Whether to resume training from latest checkpoint if available
     """
     # Create output directory
     os.makedirs(output_dir, exist_ok=True)
@@ -146,18 +148,48 @@ def train_model(
     criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     
-    # Training loop
-    logger.info(f"Starting training for {epochs} epochs")
-    
+    # Variables for training
+    start_epoch = 0
     train_losses = []
     val_losses = []
     best_val_loss = float('inf')
     best_epoch = 0
     patience_counter = 0
     
-    start_time = time.time()
+    # Define checkpoint paths
+    latest_checkpoint_path = os.path.join(output_dir, 'latest_checkpoint.pt')
+    best_model_path = os.path.join(output_dir, 'best_model.pt')
     
-    for epoch in range(epochs):
+    # Check for existing checkpoints to resume training
+    if resume_training and os.path.exists(latest_checkpoint_path):
+        logger.info(f"Found checkpoint at {latest_checkpoint_path}. Resuming training...")
+        
+        # Load checkpoint
+        checkpoint = torch.load(latest_checkpoint_path, map_location=device)
+        
+        # Load model state
+        model.load_state_dict(checkpoint['model_state_dict'])
+        
+        # Load optimizer state
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        
+        # Get training state
+        start_epoch = checkpoint['epoch'] + 1
+        train_losses = checkpoint.get('train_losses', [])
+        val_losses = checkpoint.get('val_losses', [])
+        best_val_loss = checkpoint.get('best_val_loss', float('inf'))
+        best_epoch = checkpoint.get('best_epoch', 0)
+        
+        logger.info(f"Resuming from epoch {start_epoch} with best validation loss {best_val_loss:.6f} at epoch {best_epoch+1}")
+    else:
+        logger.info("No checkpoint found or resume disabled. Starting training from scratch.")
+    
+    # Training loop
+    logger.info(f"Starting training for {epochs} epochs (from epoch {start_epoch+1})")
+    
+    start_time = time.time() if start_epoch == 0 else time.time() - sum(train_losses) * 0  # Placeholder for tracking time
+    
+    for epoch in range(start_epoch, epochs):
         # Training
         model.train()
         epoch_loss = 0.0
@@ -201,14 +233,36 @@ def train_model(
         # Log progress
         logger.info(f"Epoch {epoch+1}/{epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}")
         
+        # Save latest checkpoint (single file that gets overwritten)
+        checkpoint = {
+            'epoch': epoch,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'train_loss': train_loss,
+            'val_loss': val_loss,
+            'train_losses': train_losses,
+            'val_losses': val_losses,
+            'best_val_loss': best_val_loss,
+            'best_epoch': best_epoch,
+            'model_config': {
+                'input_dim': 1,
+                'hidden_dim': hidden_dim,
+                'num_layers': num_layers,
+                'dropout': dropout,
+                'model_type': model_type
+            }
+        }
+        
+        torch.save(checkpoint, latest_checkpoint_path)
+        
         # Check for improvement
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             best_epoch = epoch
             patience_counter = 0
             
-            # Save best model
-            torch.save(model.state_dict(), os.path.join(output_dir, 'best_model.pt'))
+            # Save best model (separate file)
+            torch.save(checkpoint, best_model_path)
             logger.info(f"Saved best model with validation loss: {best_val_loss:.4f}")
         else:
             patience_counter += 1
@@ -222,7 +276,10 @@ def train_model(
     logger.info(f"Training completed in {training_time:.2f} seconds")
     
     # Load best model for evaluation
-    model.load_state_dict(torch.load(os.path.join(output_dir, 'best_model.pt')))
+    if os.path.exists(best_model_path):
+        checkpoint = torch.load(best_model_path, map_location=device)
+        model.load_state_dict(checkpoint['model_state_dict'])
+        logger.info(f"Loaded best model from epoch {checkpoint['epoch']+1} for evaluation")
     
     # Test evaluation
     logger.info("Evaluating model on test set...")
@@ -347,10 +404,12 @@ if __name__ == "__main__":
     # Training parameters
     parser.add_argument("--learning_rate", type=float, default=0.001, help="Learning rate")
     parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
-    parser.add_argument("--epochs", type=int, default=100, help="Number of epochs")
+    parser.add_argument("--epochs", type=int, default=15, help="Number of epochs")
     parser.add_argument("--dropout", type=float, default=0.1, help="Dropout rate")
     parser.add_argument("--early_stopping_patience", type=int, default=10, help="Patience for early stopping")
     parser.add_argument("--device", type=str, default=None, help="Device to use ('cuda' or 'cpu')")
+    parser.add_argument("--resume_training", type=lambda x: (str(x).lower() == 'true'), default=True, 
+                        help="Whether to resume training from latest checkpoint if available")
     
     args = parser.parse_args()
     
@@ -377,7 +436,8 @@ if __name__ == "__main__":
         dropout=args.dropout,
         early_stopping_patience=args.early_stopping_patience,
         device=args.device,
-        use_split_dirs=args.use_split_dirs
+        use_split_dirs=args.use_split_dirs,
+        resume_training=args.resume_training
     )
     
     print("\nTraining Results:")
@@ -386,3 +446,4 @@ if __name__ == "__main__":
     print(f"Test Loss: {results['test_loss']:.4f}")
     print(f"Test RMSE: {results['test_rmse']:.4f}")
     print(f"Training Time: {results['training_time']:.2f} seconds")
+
