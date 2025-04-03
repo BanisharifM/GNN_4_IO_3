@@ -2,11 +2,13 @@
 # Simple script to split data into train/val/test sets
 
 # Default parameters
-DATA_FILE="data/sample_train_100.csv"
-OUTPUT_DIR="data/split_data/sample_100"
+DATA_FILE="data/sample_train_total.csv"
+OUTPUT_DIR="data/split_data/sample_100,000"
 TRAIN_RATIO=0.7
 VAL_RATIO=0.15
 TEST_RATIO=0.15
+SAMPLE_SIZE=100000
+
 
 # Create output directory
 mkdir -p ${OUTPUT_DIR}
@@ -18,6 +20,7 @@ python scripts/00_split_data.py \
     --output_dir ${OUTPUT_DIR} \
     --train_ratio ${TRAIN_RATIO} \
     --val_ratio ${VAL_RATIO} \
-    --test_ratio ${TEST_RATIO}
+    --test_ratio ${TEST_RATIO} \
+    --sample_size ${SAMPLE_SIZE}
 
 echo "Data splitting completed. Files saved to ${OUTPUT_DIR}/"
