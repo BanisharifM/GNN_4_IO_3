@@ -122,6 +122,7 @@ class GNNRegressor(nn.Module):
             input_dim (int): Input feature dimension
             hidden_dim (int): Hidden dimension size
             num_layers (int): Number of GNN layers
+            output_dim (int): Output dimension (default: 1)
             dropout (float): Dropout rate
             model_type (str): Type of GNN ('gcn' or 'gat')
         """
@@ -136,14 +137,12 @@ class GNNRegressor(nn.Module):
             model_type=model_type
         )
         
-        # Regression head
+        # Regression head - Option 1: Two-layer MLP
         self.fc1 = nn.Linear(hidden_dim, hidden_dim // 2)
-        self.fc2 = nn.Linear(hidden_dim // 2, 1)
+        self.fc2 = nn.Linear(hidden_dim // 2, output_dim)
         
         # Dropout
         self.dropout = nn.Dropout(dropout)
-
-        self.output_layer = nn.Linear(hidden_dim, output_dim)
         
         logger.info(f"Initialized GNN regressor with {model_type.upper()} backbone")
     
@@ -164,7 +163,7 @@ class GNNRegressor(nn.Module):
             batch (torch.Tensor, optional): Batch indices [num_nodes]
             
         Returns:
-            torch.Tensor: Regression output [batch_size, 1]
+            torch.Tensor: Regression output [batch_size, output_dim]
         """
         # Get graph-level representation from GNN
         x = self.gnn(x, edge_index, edge_attr, batch)
@@ -174,8 +173,7 @@ class GNNRegressor(nn.Module):
         x = self.dropout(x)
         x = self.fc2(x)
         
-        return self.output_layer(x)
-
+        return x
     
     def save_checkpoint(
         self, 

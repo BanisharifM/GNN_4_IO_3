@@ -182,3 +182,6 @@ data/sample_train_total.csv
 data/split_data/*
 data/preprocessed/*
 
+
+logs/*
+
