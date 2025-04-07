@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=32G
 #SBATCH --time=01:00:00
-#SBATCH --partition=gpuA40x4-interactive
+#SBATCH --partition=cpu
 #SBATCH --account=bdau-delta-gpu
 
 # === Pre-run Setup ===
@@ -16,18 +16,15 @@ echo "SLURM job started at $(date)"
 
 # === Load environment ===
 module load anaconda3
-module load cuda
-
-# === Activate your conda environment ===
 source activate gnn_env
 
 # === Set variables ===
 DATA_FILE="data/sample_train_total.csv"
-OUTPUT_DIR="data/split_data/sample_100000"
+OUTPUT_DIR="data/split_data/sample_1000,000"
 TRAIN_RATIO=0.7
 VAL_RATIO=0.15
 TEST_RATIO=0.15
-SAMPLE_SIZE=100000
+SAMPLE_SIZE=1000000
 
 # === Create output directory ===
 mkdir -p ${OUTPUT_DIR}
@@ -42,5 +39,4 @@ python scripts/00_split_data.py \
   --test_ratio ${TEST_RATIO} \
   --sample_size ${SAMPLE_SIZE}
 
-# === Job End ===
 echo "Data splitting completed at $(date)"

@@ -35,7 +35,7 @@ def train_model(
     model_type='gcn',
     learning_rate=0.001,
     batch_size=32,
-    epochs=15,
+    epochs=100,
     dropout=0.1,
     early_stopping_patience=10,
     device=None,
@@ -404,7 +404,7 @@ if __name__ == "__main__":
     # Training parameters
     parser.add_argument("--learning_rate", type=float, default=0.001, help="Learning rate")
     parser.add_argument("--batch_size", type=int, default=32, help="Batch size")
-    parser.add_argument("--epochs", type=int, default=15, help="Number of epochs")
+    parser.add_argument("--epochs", type=int, default=100, help="Number of epochs")
     parser.add_argument("--dropout", type=float, default=0.1, help="Dropout rate")
     parser.add_argument("--early_stopping_patience", type=int, default=10, help="Patience for early stopping")
     parser.add_argument("--device", type=str, default=None, help="Device to use ('cuda' or 'cpu')")

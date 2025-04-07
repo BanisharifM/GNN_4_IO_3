@@ -2,9 +2,9 @@
 # Simple script to preprocess data for validation set
 
 # Default parameters
-DATA_FILE="data/split_data/sample_100/val.csv"
+DATA_FILE="data/split_data/sample_1,000,000/val.csv"
 MI_FILE="data/mutual_information2.csv"
-OUTPUT_DIR="data/preprocessed/baseline_gcn/val"
+OUTPUT_DIR="data/preprocessed/baseline_gcn/experiment_2/val"
 SPLIT_TYPE="val"
 
 # Create output directory

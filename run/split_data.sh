@@ -3,11 +3,11 @@
 
 # Default parameters
 DATA_FILE="data/sample_train_total.csv"
-OUTPUT_DIR="data/split_data/sample_100,000"
+OUTPUT_DIR="data/split_data/sample_1,000,000"
 TRAIN_RATIO=0.7
 VAL_RATIO=0.15
 TEST_RATIO=0.15
-SAMPLE_SIZE=100000
+SAMPLE_SIZE=1000000
 
 
 # Create output directory

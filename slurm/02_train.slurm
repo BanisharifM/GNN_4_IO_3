@@ -1,15 +1,15 @@
 #!/bin/bash
 #SBATCH --job-name=gnn_train
 #SBATCH --account=bdau-delta-gpu    
-#SBATCH --partition=gpuA40x4-interactive 
+#SBATCH --partition=gpuA100x4-interactive 
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --gres=gpu:1
 #SBATCH --mem=32G
 #SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/train_%j.out
-#SBATCH --error=logs/slurm/train_%j.err
+#SBATCH --output=logs/slurm/experiment_2/train_%j.out
+#SBATCH --error=logs/slurm/experiment_2/train_%j.err
 
 # Load required modules
 module load anaconda3
@@ -22,9 +22,9 @@ source activate gnn_env
 mkdir -p logs
 
 # Set variables for split-based workflow
-TRAIN_DIR="data/preprocessed/baseline_gcn/train"
-VAL_DIR="data/preprocessed/baseline_gcn/val"
-TEST_DIR="data/preprocessed/baseline_gcn/test"
+TRAIN_DIR="data/preprocessed/baseline_gcn/experiment_2/train"
+VAL_DIR="data/preprocessed/baseline_gcn/experiment_2/val"
+TEST_DIR="data/preprocessed/baseline_gcn/experiment_2/test"
 OUTPUT_DIR="logs/training/baseline_gcn/experiment_2"
 
 # Run training script with single checkpoint
@@ -39,7 +39,7 @@ python scripts/02_train_model.py \
   --num_layers 2 \
   --learning_rate 0.001 \
   --batch_size 32 \
-  --epochs 5 \
+  --epochs 100 \
   --dropout 0.1 \
   --early_stopping_patience 10 \
   --device cuda \
