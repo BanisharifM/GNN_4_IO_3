@@ -1,0 +1,44 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"anaconda3"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "anaconda3"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+  warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+2025-04-07 17:51:08,893 - INFO - Using device: cuda
+2025-04-07 17:51:08,893 - INFO - Using split-based workflow with directories: data/preprocessed/baseline_gcn/experiment_2/train, data/preprocessed/baseline_gcn/experiment_2/val, data/preprocessed/baseline_gcn/experiment_2/test
+2025-04-07 17:51:09,179 - INFO - Creating datasets from split directories...
+2025-04-07 17:51:37,420 - INFO - Train/Val/Test sizes: 700000/150000/150000
+2025-04-07 17:51:37,420 - INFO - Creating GCN model with 2 layers and 64 hidden dimensions
+2025-04-07 17:51:37,475 - INFO - Initialized GCN model with 2 layers and 64 hidden dimensions
+2025-04-07 17:51:37,475 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-07 17:51:37,761 - INFO - No checkpoint found or resume disabled. Starting training from scratch.
+2025-04-07 17:51:37,761 - INFO - Starting training for 100 epochs (from epoch 1)
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch/nn/modules/loss.py:610: UserWarning: Using a target size (torch.Size([32])) that is different to the input size (torch.Size([32, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch/nn/modules/loss.py:610: UserWarning: Using a target size (torch.Size([16])) that is different to the input size (torch.Size([16, 1])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  return F.mse_loss(input, target, reduction=self.reduction)
+2025-04-07 17:53:38,649 - INFO - Epoch 1/100, Train Loss: 54963492.4177, Val Loss: 335448.5541
+2025-04-07 17:53:38,660 - INFO - Saved best model with validation loss: 335448.5541
+2025-04-07 17:55:38,969 - INFO - Epoch 2/100, Train Loss: 27172505.6646, Val Loss: 1659252.8722
+2025-04-07 17:57:39,281 - INFO - Epoch 3/100, Train Loss: 3213833.3385, Val Loss: 92.2615
+2025-04-07 17:57:39,294 - INFO - Saved best model with validation loss: 92.2615
+2025-04-07 17:59:39,276 - INFO - Epoch 4/100, Train Loss: 1.7167, Val Loss: 0.9478
+2025-04-07 17:59:39,289 - INFO - Saved best model with validation loss: 0.9478
+2025-04-07 18:01:39,857 - INFO - Epoch 5/100, Train Loss: 0.9499, Val Loss: 0.9473
+2025-04-07 18:01:39,869 - INFO - Saved best model with validation loss: 0.9473
+2025-04-07 18:03:39,494 - INFO - Epoch 6/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:03:39,505 - INFO - Saved best model with validation loss: 0.9473
+2025-04-07 18:05:40,077 - INFO - Epoch 7/100, Train Loss: 0.9485, Val Loss: 0.9474
+2025-04-07 18:07:40,722 - INFO - Epoch 8/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:09:40,836 - INFO - Epoch 9/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:09:40,849 - INFO - Saved best model with validation loss: 0.9473

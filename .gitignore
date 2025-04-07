@@ -183,5 +183,5 @@ data/split_data/*
 data/preprocessed/*
 
 
-logs/*
+logs/**/*.pt
 
