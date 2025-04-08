@@ -116,8 +116,8 @@ def train_with_params(
             out = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
             
             # Compute loss
-            loss = criterion(out, batch.y)
-            
+            loss = criterion(out.view(-1), batch.y.view(-1))
+ 
             # Backward pass and optimize
             loss.backward()
             optimizer.step()
@@ -136,7 +136,7 @@ def train_with_params(
             for batch in val_loader:
                 batch = batch.to(device)
                 out = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
-                loss = criterion(out, batch.y)
+                loss = criterion(out.view(-1), batch.y.view(-1))
                 val_loss += loss.item() * batch.num_graphs
                 
                 # Store predictions and targets for metrics
@@ -151,15 +151,15 @@ def train_with_params(
         val_r2 = metrics.r2_score(val_targets, val_preds)
         
         # Report metrics to Ray Tune
-        tune.report(
-            loss=val_loss,
-            train_loss=train_loss,
-            rmse=val_rmse,
-            mae=val_mae,
-            r2=val_r2,
-            epoch=epoch
-        )
-        
+        tune.report({
+            "loss": val_loss,
+            "train_loss": train_loss,
+            "rmse": val_rmse,
+            "mae": val_mae,
+            "r2": val_r2,
+            "epoch": epoch
+        })
+  
         # Check for improvement
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -271,9 +271,7 @@ def optimize_hyperparameters(
     )
     
     # Set up TensorBoard callback
-    tb_callback = TBXLoggerCallback(
-        metrics=["loss", "train_loss", "rmse", "mae", "r2", "epoch"]
-    ) 
+    tb_callback = TBXLoggerCallback() 
     
     # Run optimization
     start_time = time.time()
@@ -287,7 +285,7 @@ def optimize_hyperparameters(
         search_alg=search_alg,
         num_samples=num_samples,
         resources_per_trial={"cpu": cpus_per_trial, "gpu": gpus_per_trial},
-        local_dir=output_dir,
+        storage_path=os.path.abspath(output_dir),
         name="gnn_hyperopt",
         keep_checkpoints_num=1,
         checkpoint_score_attr="min-loss",
@@ -336,7 +334,7 @@ def optimize_hyperparameters(
     best_params_script = os.path.join(output_dir, 'train_best_model.sh')
     with open(best_params_script, 'w') as f:
         f.write("#!/bin/bash\n\n")
-        f.write(f"python {os.path.join(project_root, 'scripts', '02_train_model_single_checkpoint.py')} \\\n")
+        f.write(f"python -W ignore {os.path.join(project_root, 'scripts', '02_train_model_single_checkpoint.py')} \\\n")
         f.write(f"  --train_dir {train_dir} \\\n")
         f.write(f"  --val_dir {val_dir} \\\n")
         f.write(f"  --test_dir {test_dir} \\\n")
@@ -378,10 +376,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     results = optimize_hyperparameters(
-        args.train_dir,
-        args.val_dir,
-        args.test_dir,
-        args.output_dir,
+        os.path.abspath(args.train_dir),
+        os.path.abspath(args.val_dir),
+        os.path.abspath(args.test_dir),
+        os.path.abspath(args.output_dir),
         args.num_samples,
         args.max_epochs,
         args.early_stopping_patience,

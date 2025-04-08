@@ -31,7 +31,7 @@ mkdir -p ${OUTPUT_DIR}
 
 # Run hyperparameter optimization script
 echo "Starting hyperparameter optimization at $(date)"
-python scripts/04_hyperparameter_optimization.py \
+python -W ignore scripts/04_hyperparameter_optimization.py \
   --train_dir ${TRAIN_DIR} \
   --val_dir ${VAL_DIR} \
   --test_dir ${TEST_DIR} \
