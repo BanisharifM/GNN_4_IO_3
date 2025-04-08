@@ -6,13 +6,13 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
 #SBATCH --gres=gpu:1
-#SBATCH --mem=32G
+#SBATCH --mem=128G
 #SBATCH --time=01:00:00
 #SBATCH --output=logs/slurm/experiment_2/train_%j.out
 #SBATCH --error=logs/slurm/experiment_2/train_%j.err
 
 # Load required modules
-module load anaconda3
+# module load anaconda3
 module load cuda
 
 # Activate conda environment (replace with your environment name)
@@ -39,7 +39,7 @@ python scripts/02_train_model.py \
   --num_layers 2 \
   --learning_rate 0.001 \
   --batch_size 32 \
-  --epochs 100 \
+  --epochs 20 \
   --dropout 0.1 \
   --early_stopping_patience 10 \
   --device cuda \

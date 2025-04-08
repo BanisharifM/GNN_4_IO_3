@@ -203,6 +203,7 @@ def train_model(
             
             # Forward pass
             out = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
+            out = out.squeeze(-1)
             
             # Compute loss
             loss = criterion(out, batch.y)
@@ -224,6 +225,7 @@ def train_model(
             for batch in val_loader:
                 batch = batch.to(device)
                 out = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
+                out = out.squeeze(-1)
                 loss = criterion(out, batch.y)
                 val_loss += loss.item() * batch.num_graphs
         
@@ -292,6 +294,7 @@ def train_model(
         for batch in test_loader:
             batch = batch.to(device)
             out = model(batch.x, batch.edge_index, batch.edge_attr, batch.batch)
+            out = out.squeeze(-1)
             loss = criterion(out, batch.y)
             test_loss += loss.item() * batch.num_graphs
             

@@ -42,3 +42,20 @@ Also make sure that all modulefiles written in TCL start with the string
 2025-04-07 18:07:40,722 - INFO - Epoch 8/100, Train Loss: 0.9485, Val Loss: 0.9473
 2025-04-07 18:09:40,836 - INFO - Epoch 9/100, Train Loss: 0.9485, Val Loss: 0.9473
 2025-04-07 18:09:40,849 - INFO - Saved best model with validation loss: 0.9473
+2025-04-07 18:11:42,318 - INFO - Epoch 10/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:13:43,360 - INFO - Epoch 11/100, Train Loss: 0.9485, Val Loss: 0.9476
+2025-04-07 18:15:43,385 - INFO - Epoch 12/100, Train Loss: 0.9485, Val Loss: 0.9475
+2025-04-07 18:17:43,228 - INFO - Epoch 13/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:19:43,259 - INFO - Epoch 14/100, Train Loss: 0.9485, Val Loss: 0.9474
+2025-04-07 18:21:42,924 - INFO - Epoch 15/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:23:43,324 - INFO - Epoch 16/100, Train Loss: 0.9485, Val Loss: 0.9477
+2025-04-07 18:25:43,184 - INFO - Epoch 17/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:27:42,211 - INFO - Epoch 18/100, Train Loss: 0.9485, Val Loss: 0.9473
+2025-04-07 18:29:40,672 - INFO - Epoch 19/100, Train Loss: 0.9485, Val Loss: 0.9475
+2025-04-07 18:29:40,679 - INFO - Early stopping triggered after 19 epochs
+2025-04-07 18:29:40,679 - INFO - Training completed in 2282.92 seconds
+2025-04-07 18:29:40,687 - INFO - Loaded best model from epoch 9 for evaluation
+2025-04-07 18:29:40,687 - INFO - Evaluating model on test set...
+2025-04-07 18:29:56,819 - INFO - Test Loss: 0.9558
+/var/spool/slurmd/job8948752/slurm_script: line 47: 1613313 Killed                  python scripts/02_train_model.py --train_dir ${TRAIN_DIR} --val_dir ${VAL_DIR} --test_dir ${TEST_DIR} --output_dir ${OUTPUT_DIR} --model_type gcn --hidden_dim 64 --num_layers 2 --learning_rate 0.001 --batch_size 32 --epochs 100 --dropout 0.1 --early_stopping_patience 10 --device cuda --use_split_dirs True --resume_training True
+slurmstepd: error: Detected 1 oom_kill event in StepId=8948752.batch. Some of the step tasks have been OOM Killed.

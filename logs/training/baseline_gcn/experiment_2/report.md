@@ -1,4 +1,3 @@
-```markdown
 # Experiment 2 Report
 
 ## Overview
@@ -15,7 +14,7 @@ This experiment involved training the baseline GCN model using a Slurm job submi
     - **Time Limit**: 1 hour
 - **Environment**:
     - **Conda Environment**: `gnn_env`
-    - **Modules Loaded**: `anaconda3`, `cuda`
+    - **Modules Loaded**: `cuda`
 - **Directories**:
     - **Training Data**: `data/preprocessed/baseline_gcn/experiment_2/train`
     - **Validation Data**: `data/preprocessed/baseline_gcn/experiment_2/val`
@@ -60,18 +59,24 @@ The goal of this experiment was to evaluate the baseline GCN model's performance
 ## Results
 
 - **Metrics**:
-    - Accuracy: [Value]
-    - Precision: [Value]
-    - Recall: [Value]
-    - F1-Score: [Value]
+    - Accuracy: N/A
+    - Precision: N/A
+    - Recall: N/A
+    - F1-Score: N/A
 - **Loss**:
-    - Final Training Loss: [Value]
-    - Final Validation Loss: [Value]
-- **Other Observations**: [Add any additional observations]
+    - Final Training Loss: 0.9485
+    - Final Validation Loss: 0.9474
+    - Test Loss: 0.9558
+    - Test RMSE: 0.9884
+- **Other Observations**:
+    - Training resumed from epoch 19 with the best validation loss of 0.947294 at epoch 9.
+    - Training completed in 128 seconds for the resumed 20 epochs.
 
 ## Analysis
 
-- [Provide insights into the results, such as strengths, weaknesses, or patterns observed.]
+- The model achieved a test loss of 0.9558 and a test RMSE of 0.9884, indicating reasonable performance for the baseline GCN.
+- Issues were encountered with the `torch-scatter` and `torch-sparse` libraries, which were disabled during execution. This may have impacted performance.
+- A warning about mismatched target and input sizes during loss computation was observed, which should be addressed in future experiments.
 
 ## Conclusion
 
@@ -87,7 +92,3 @@ These results provide a strong foundation for evaluating the baseline GCN model'
 
 ## Future Work
 
-- Explore hyperparameter tuning for improved performance.
-- Investigate alternative GNN architectures.
-- Perform additional experiments with larger datasets or different graph structures.
-```  
