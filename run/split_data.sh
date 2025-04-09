@@ -3,11 +3,11 @@
 
 # Default parameters
 DATA_FILE="data/sample_train_total.csv"
-OUTPUT_DIR="data/split_data/sample_1,000,000"
+OUTPUT_DIR="data/split_data/sample_total"
 TRAIN_RATIO=0.7
 VAL_RATIO=0.15
 TEST_RATIO=0.15
-SAMPLE_SIZE=1000000
+# SAMPLE_SIZE=1000000
 
 
 # Create output directory
@@ -21,6 +21,6 @@ python scripts/00_split_data.py \
     --train_ratio ${TRAIN_RATIO} \
     --val_ratio ${VAL_RATIO} \
     --test_ratio ${TEST_RATIO} \
-    --sample_size ${SAMPLE_SIZE}
+    # --sample_size ${SAMPLE_SIZE}
 
 echo "Data splitting completed. Files saved to ${OUTPUT_DIR}/"

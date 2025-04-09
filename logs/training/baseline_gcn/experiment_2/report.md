@@ -58,11 +58,6 @@ The goal of this experiment was to evaluate the baseline GCN model's performance
 
 ## Results
 
-- **Metrics**:
-    - Accuracy: N/A
-    - Precision: N/A
-    - Recall: N/A
-    - F1-Score: N/A
 - **Loss**:
     - Final Training Loss: 0.9485
     - Final Validation Loss: 0.9474

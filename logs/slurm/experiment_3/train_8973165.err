@@ -1,0 +1,20 @@
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+  warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+  warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+2025-04-09 00:19:22,369 - INFO - Using device: cuda
+2025-04-09 00:19:22,369 - INFO - Using split-based workflow with directories: data/preprocessed/baseline_gcn/experiment_3/train, data/preprocessed/baseline_gcn/experiment_3/val, data/preprocessed/baseline_gcn/experiment_3/test
+2025-04-09 00:19:23,924 - INFO - Creating datasets from split directories...
+2025-04-09 00:22:25,460 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-09 00:22:25,460 - INFO - Creating GCN model with 2 layers and 64 hidden dimensions
+2025-04-09 00:22:25,516 - INFO - Initialized GCN model with 2 layers and 64 hidden dimensions
+2025-04-09 00:22:25,516 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-09 00:22:25,814 - INFO - No checkpoint found or resume disabled. Starting training from scratch.
+2025-04-09 00:22:25,814 - INFO - Starting training for 100 epochs (from epoch 1)
+2025-04-09 00:35:44,018 - INFO - Epoch 1/100, Train Loss: 54700249.3818, Val Loss: 0.9489
+2025-04-09 00:35:44,030 - INFO - Saved best model with validation loss: 0.9489
+2025-04-09 00:48:55,388 - INFO - Epoch 2/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 01:02:04,960 - INFO - Epoch 3/100, Train Loss: 0.9495, Val Loss: 0.9491
+2025-04-09 01:15:15,779 - INFO - Epoch 4/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 01:15:15,791 - INFO - Saved best model with validation loss: 0.9489
+slurmstepd: error: *** JOB 8973165 ON gpua020 CANCELLED AT 2025-04-09T01:19:11 DUE TO TIME LIMIT ***

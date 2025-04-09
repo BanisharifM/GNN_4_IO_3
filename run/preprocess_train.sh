@@ -2,9 +2,9 @@
 # Simple script to preprocess data for baseline GCN model
 
 # Default parameters
-DATA_FILE="data/split_data/sample_1,000,000/train.csv"
+DATA_FILE="data/split_data/sample_total/train.csv"
 MI_FILE="data/mutual_information2.csv"
-OUTPUT_DIR="data/preprocessed/baseline_gcn/experiment_2/train"
+OUTPUT_DIR="data/preprocessed/baseline_gcn/experiment_3/train"
 SPLIT_TYPE="train"
 
 # Create output directory
