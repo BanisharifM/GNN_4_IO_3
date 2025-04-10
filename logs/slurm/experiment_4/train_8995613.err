@@ -8,3 +8,12 @@
 2025-04-09 20:24:46,835 - INFO - Found checkpoint at logs/training/baseline_gcn/experiment_4/latest_checkpoint.pt. Resuming training...
 2025-04-09 20:24:46,851 - INFO - Resuming from epoch 6 with best validation loss 0.632172 at epoch 5
 2025-04-09 20:24:46,851 - INFO - Starting training for 100 epochs (from epoch 7)
+2025-04-09 20:34:11,369 - INFO - Epoch 7/100, Train Loss: 0.6687, Val Loss: 0.6288
+2025-04-09 20:34:11,397 - INFO - Saved best model with validation loss: 0.6288
+2025-04-09 20:43:30,505 - INFO - Epoch 8/100, Train Loss: 0.6672, Val Loss: 0.6287
+2025-04-09 20:43:30,536 - INFO - Saved best model with validation loss: 0.6287
+2025-04-09 20:52:50,668 - INFO - Epoch 9/100, Train Loss: 0.6644, Val Loss: 0.6311
+2025-04-09 21:02:05,646 - INFO - Epoch 10/100, Train Loss: 0.6642, Val Loss: 0.6263
+2025-04-09 21:02:05,672 - INFO - Saved best model with validation loss: 0.6263
+2025-04-09 21:11:19,602 - INFO - Epoch 11/100, Train Loss: 0.6643, Val Loss: 0.6264
+2025-04-09 21:20:32,862 - INFO - Epoch 12/100, Train Loss: 0.6634, Val Loss: 0.6300
