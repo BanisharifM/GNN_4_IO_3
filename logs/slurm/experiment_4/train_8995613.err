@@ -17,3 +17,7 @@
 2025-04-09 21:02:05,672 - INFO - Saved best model with validation loss: 0.6263
 2025-04-09 21:11:19,602 - INFO - Epoch 11/100, Train Loss: 0.6643, Val Loss: 0.6264
 2025-04-09 21:20:32,862 - INFO - Epoch 12/100, Train Loss: 0.6634, Val Loss: 0.6300
+2025-04-09 21:29:44,988 - INFO - Epoch 13/100, Train Loss: 0.6621, Val Loss: 0.6322
+2025-04-09 21:38:55,095 - INFO - Epoch 14/100, Train Loss: 0.6619, Val Loss: 0.6301
+2025-04-09 21:48:04,537 - INFO - Epoch 15/100, Train Loss: 0.6611, Val Loss: 0.6246
+2025-04-09 21:48:04,565 - INFO - Saved best model with validation loss: 0.6246
