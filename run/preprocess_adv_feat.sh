@@ -1,72 +1,44 @@
 #!/bin/bash
 # Simple script to preprocess data for test set with advanced feature selection
 
-# TEST SET
-# Default parameters
-DATA_FILE="data/split_data/sample_total/test.csv"
+mkdir -p data/preprocessed/adv_feat/total/train
+mkdir -p data/preprocessed/adv_feat/total/val
+mkdir -p data/preprocessed/adv_feat/total/test
+
+# Set variables
+TRAIN_DATA="data/split_data/sample_total/train.csv"
+VAL_DATA="data/split_data/sample_total/val.csv"
+TEST_DATA="data/split_data/sample_total/test.csv"
 MI_FILE="data/mutual_information2.csv"
-OUTPUT_DIR="data/preprocessed/adv_feat/total/test"
-SPLIT_TYPE="test"
+OUTPUT_DIR_TRAIN="data/preprocessed/adv_feat/total/train"
+OUTPUT_DIR_VAL="data/preprocessed/adv_feat/total/val"
+OUTPUT_DIR_TEST="data/preprocessed/adv_feat/total/test"
 
-# Create output directory
-mkdir -p ${OUTPUT_DIR}
-
-# Run the preprocess data script
-echo "Preprocessing ${SPLIT_TYPE} data from ${DATA_FILE}..."
+# Run preprocessing with advanced feature selection for train data
+echo "Preprocessing train data with advanced feature selection..."
 python scripts/01_preprocess_data.py \
-    --data_file ${DATA_FILE} \
-    --mi_file ${MI_FILE} \
-    --output_dir ${OUTPUT_DIR} \
-    --split_type ${SPLIT_TYPE} \
-    --use_advanced_feature_selection False \
-    --use_clustering False \
-    --top_features 10
+  --data_file ${TRAIN_DATA} \
+  --mi_file ${MI_FILE} \
+  --output_dir ${OUTPUT_DIR_TRAIN} \
+  --split_type train \
+  --use_advanced_feature_selection True
 
-echo "Preprocessing completed. Results saved to ${OUTPUT_DIR}/"
-
-
-#TRAINING SET
-# Default parameters
-DATA_FILE="data/split_data/sample_total/train.csv"
-MI_FILE="data/mutual_information2.csv"
-OUTPUT_DIR="data/preprocessed/adv_feat/total/train"
-SPLIT_TYPE="train"
-
-# Create output directory
-mkdir -p ${OUTPUT_DIR}
-
-# Run the preprocess data script
-echo "Preprocessing ${SPLIT_TYPE} data from ${DATA_FILE}..."
+# Run preprocessing with advanced feature selection for validation data
+echo "Preprocessing validation data with advanced feature selection..."
 python scripts/01_preprocess_data.py \
-    --data_file ${DATA_FILE} \
-    --mi_file ${MI_FILE} \
-    --output_dir ${OUTPUT_DIR} \
-    --split_type ${SPLIT_TYPE} \
-    --use_advanced_feature_selection False \
-    --use_clustering False \
-    --top_features 10
+  --data_file ${VAL_DATA} \
+  --mi_file ${MI_FILE} \
+  --output_dir ${OUTPUT_DIR_VAL} \
+  --split_type val \
+  --use_advanced_feature_selection True
 
-echo "Preprocessing completed. Results saved to ${OUTPUT_DIR}/"
-
-#VALIDATION SET
-# Default parameters
-DATA_FILE="data/split_data/sample_total/val.csv"
-MI_FILE="data/mutual_information2.csv"
-OUTPUT_DIR="data/preprocessed/adv_feat/total/val"
-SPLIT_TYPE="val"
-
-# Create output directory
-mkdir -p ${OUTPUT_DIR}
-
-# Run the preprocess data script
-echo "Preprocessing ${SPLIT_TYPE} data from ${DATA_FILE}..."
+# Run preprocessing with advanced feature selection for test data
+echo "Preprocessing test data with advanced feature selection..."
 python scripts/01_preprocess_data.py \
-    --data_file ${DATA_FILE} \
-    --mi_file ${MI_FILE} \
-    --output_dir ${OUTPUT_DIR} \
-    --split_type ${SPLIT_TYPE} \
-    --use_advanced_feature_selection False \
-    --use_clustering False \
-    --top_features 10
+  --data_file ${TEST_DATA} \
+  --mi_file ${MI_FILE} \
+  --output_dir ${OUTPUT_DIR_TEST} \
+  --split_type test \
+  --use_advanced_feature_selection True
 
-echo "Preprocessing completed. Results saved to ${OUTPUT_DIR}/"
+echo "Advanced feature selection preprocessing completed at $(date)"

@@ -12,3 +12,5 @@
 2025-04-09 21:21:02,824 - INFO - Epoch 2/100, Train Loss: 1.1553, Val Loss: 0.9489
 2025-04-09 21:30:51,451 - INFO - Epoch 3/100, Train Loss: 0.9496, Val Loss: 0.9489
 2025-04-09 21:40:48,168 - INFO - Epoch 4/100, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-09 21:50:34,357 - INFO - Epoch 5/100, Train Loss: 1.0395, Val Loss: 0.9489
+slurmstepd: error: *** JOB 8996338 ON gpua099 CANCELLED AT 2025-04-09T21:56:26 DUE TO TIME LIMIT ***
