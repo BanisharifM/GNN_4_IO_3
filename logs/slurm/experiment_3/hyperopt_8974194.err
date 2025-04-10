@@ -1,0 +1,47 @@
+2025-04-09 03:27:27,919 - INFO - Starting hyperparameter optimization with 40 configurations
+2025-04-09 03:27:31,247	INFO worker.py:1852 -- Started a local Ray instance.
+[I 2025-04-09 03:27:32,215] A new study created in memory with name: optuna
+2025-04-09 03:27:32,233	WARNING tune.py:902 -- AIR_VERBOSITY is set, ignoring passed-in ProgressReporter for now.
+[36m(pid=517466)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=517466)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=517466)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=517466)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(pid=517637)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=517637)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=517637)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=517637)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(pid=517793)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=517793)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=517793)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=517793)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(pid=517944)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=517944)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=517944)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=517944)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(func pid=517466)[0m 2025-04-09 03:30:18,823 - INFO - Initialized GCN model with 3 layers and 128 hidden dimensions
+[36m(func pid=517466)[0m 2025-04-09 03:30:18,823 - INFO - Initialized GNN regressor with GCN backbone
+[36m(func pid=517637)[0m 2025-04-09 03:30:30,282 - INFO - Initialized GCN model with 2 layers and 256 hidden dimensions
+[36m(func pid=517637)[0m 2025-04-09 03:30:30,282 - INFO - Initialized GNN regressor with GCN backbone
+[36m(func pid=517793)[0m 2025-04-09 03:30:34,081 - INFO - Initialized GCN model with 1 layers and 256 hidden dimensions
+[36m(func pid=517793)[0m 2025-04-09 03:30:34,082 - INFO - Initialized GNN regressor with GCN backbone
+[36m(func pid=517944)[0m 2025-04-09 03:30:44,765 - INFO - Initialized GCN model with 3 layers and 64 hidden dimensions
+[36m(func pid=517944)[0m 2025-04-09 03:30:44,765 - INFO - Initialized GNN regressor with GCN backbone
+[36m(pid=3944802)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=3944802)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=3944802)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=3944802)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(func pid=3944802)[0m 2025-04-09 08:59:45,622 - INFO - Initialized GCN model with 4 layers and 64 hidden dimensions
+[36m(func pid=3944802)[0m 2025-04-09 08:59:45,623 - INFO - Initialized GNN regressor with GCN backbone
+[36m(pid=793412)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=793412)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=793412)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=793412)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(func pid=793412)[0m 2025-04-09 10:39:45,763 - INFO - Initialized GAT model with 4 layers and 32 hidden dimensions
+[36m(func pid=793412)[0m 2025-04-09 10:39:45,764 - INFO - Initialized GNN regressor with GAT backbone
+[36m(pid=1575079)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:86: UserWarning: An issue occurred while importing 'torch-scatter'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_scatter/_scatter_cuda.so: undefined symbol: _ZN2at4_ops16div__Tensor_mode4callERNS_6TensorERKS2_St8optionalIN3c1017basic_string_viewIcEEE
+[36m(pid=1575079)[0m   warnings.warn(f"An issue occurred while importing 'torch-scatter'. "
+[36m(pid=1575079)[0m /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_geometric/typing.py:124: UserWarning: An issue occurred while importing 'torch-sparse'. Disabling its usage. Stacktrace: /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/torch_sparse/_spmm_cuda.so: undefined symbol: _ZN5torch8autograd12VariableInfoC1ERKN2at6TensorE
+[36m(pid=1575079)[0m   warnings.warn(f"An issue occurred while importing 'torch-sparse'. "
+[36m(func pid=1575079)[0m 2025-04-09 11:54:29,977 - INFO - Initialized GCN model with 4 layers and 32 hidden dimensions
+[36m(func pid=1575079)[0m 2025-04-09 11:54:29,978 - INFO - Initialized GNN regressor with GCN backbone
+slurmstepd: error: *** JOB 8974194 ON gpua069 CANCELLED AT 2025-04-09T14:53:00 ***

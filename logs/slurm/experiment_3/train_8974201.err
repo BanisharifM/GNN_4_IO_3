@@ -1,0 +1,40 @@
+2025-04-09 04:29:25,393 - INFO - Using device: cuda
+2025-04-09 04:29:25,393 - INFO - Using split-based workflow with directories: data/preprocessed/baseline_gcn/experiment_3/train, data/preprocessed/baseline_gcn/experiment_3/val, data/preprocessed/baseline_gcn/experiment_3/test
+2025-04-09 04:29:27,585 - INFO - Creating datasets from split directories...
+2025-04-09 04:32:32,560 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-09 04:32:32,560 - INFO - Creating GCN model with 2 layers and 64 hidden dimensions
+2025-04-09 04:32:32,617 - INFO - Initialized GCN model with 2 layers and 64 hidden dimensions
+2025-04-09 04:32:32,617 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-09 04:32:32,914 - INFO - Found checkpoint at logs/training/baseline_gcn/experiment_3/latest_checkpoint.pt. Resuming training...
+2025-04-09 04:32:32,928 - INFO - Resuming from epoch 4 with best validation loss 0.948910 at epoch 1
+2025-04-09 04:32:32,928 - INFO - Starting training for 100 epochs (from epoch 5)
+2025-04-09 04:46:25,550 - INFO - Epoch 5/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 04:46:25,564 - INFO - Saved best model with validation loss: 0.9489
+2025-04-09 05:00:11,316 - INFO - Epoch 6/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 05:13:56,472 - INFO - Epoch 7/100, Train Loss: 0.9495, Val Loss: 0.9490
+2025-04-09 05:27:38,713 - INFO - Epoch 8/100, Train Loss: 0.9495, Val Loss: 0.9492
+2025-04-09 05:41:23,477 - INFO - Epoch 9/100, Train Loss: 0.9495, Val Loss: 0.9490
+2025-04-09 05:55:07,840 - INFO - Epoch 10/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 06:08:44,597 - INFO - Epoch 11/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 06:22:24,671 - INFO - Epoch 12/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 06:22:24,683 - INFO - Saved best model with validation loss: 0.9489
+2025-04-09 06:35:58,472 - INFO - Epoch 13/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 06:49:27,032 - INFO - Epoch 14/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 06:49:27,045 - INFO - Saved best model with validation loss: 0.9489
+2025-04-09 07:02:50,426 - INFO - Epoch 15/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 07:16:14,506 - INFO - Epoch 16/100, Train Loss: 0.9495, Val Loss: 0.9491
+2025-04-09 07:29:38,561 - INFO - Epoch 17/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 07:43:02,068 - INFO - Epoch 18/100, Train Loss: 0.9495, Val Loss: 0.9491
+2025-04-09 07:56:25,196 - INFO - Epoch 19/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 08:09:49,706 - INFO - Epoch 20/100, Train Loss: 0.9495, Val Loss: 0.9490
+2025-04-09 08:23:17,089 - INFO - Epoch 21/100, Train Loss: 0.9495, Val Loss: 0.9490
+2025-04-09 08:36:42,224 - INFO - Epoch 22/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 08:50:02,580 - INFO - Epoch 23/100, Train Loss: 0.9495, Val Loss: 0.9490
+2025-04-09 09:03:21,993 - INFO - Epoch 24/100, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-09 09:03:22,001 - INFO - Early stopping triggered after 24 epochs
+2025-04-09 09:03:22,001 - INFO - Training completed in 16249.07 seconds
+2025-04-09 09:03:22,008 - INFO - Loaded best model from epoch 14 for evaluation
+2025-04-09 09:03:22,008 - INFO - Evaluating model on test set...
+2025-04-09 09:05:08,388 - INFO - Test Loss: 0.9483
+2025-04-09 09:05:08,510 - INFO - Test RMSE: 0.9738
+2025-04-09 09:05:22,603 - INFO - Training results saved to logs/training/baseline_gcn/experiment_3

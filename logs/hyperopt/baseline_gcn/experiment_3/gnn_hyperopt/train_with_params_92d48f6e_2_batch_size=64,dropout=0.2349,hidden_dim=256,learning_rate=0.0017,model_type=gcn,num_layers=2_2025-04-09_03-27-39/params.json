@@ -1,0 +1,8 @@
+{
+  "batch_size": 64,
+  "dropout": 0.23487409763750228,
+  "hidden_dim": 256,
+  "learning_rate": 0.0017331607338165434,
+  "model_type": "gcn",
+  "num_layers": 2
+}

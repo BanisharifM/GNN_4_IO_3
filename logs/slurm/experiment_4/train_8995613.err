@@ -1,0 +1,10 @@
+2025-04-09 20:21:03,238 - INFO - Using device: cuda
+2025-04-09 20:21:03,239 - INFO - Using split-based workflow with directories: data/preprocessed/baseline_gcn/experiment_3/train, data/preprocessed/baseline_gcn/experiment_3/val, data/preprocessed/baseline_gcn/experiment_3/test
+2025-04-09 20:21:05,014 - INFO - Creating datasets from split directories...
+2025-04-09 20:24:46,254 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-09 20:24:46,254 - INFO - Creating GCN model with 2 layers and 256 hidden dimensions
+2025-04-09 20:24:46,360 - INFO - Initialized GCN model with 2 layers and 256 hidden dimensions
+2025-04-09 20:24:46,361 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-09 20:24:46,835 - INFO - Found checkpoint at logs/training/baseline_gcn/experiment_4/latest_checkpoint.pt. Resuming training...
+2025-04-09 20:24:46,851 - INFO - Resuming from epoch 6 with best validation loss 0.632172 at epoch 5
+2025-04-09 20:24:46,851 - INFO - Starting training for 100 epochs (from epoch 7)
