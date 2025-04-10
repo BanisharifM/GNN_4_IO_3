@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=gnn_train
 #SBATCH --account=bdau-delta-gpu    
-#SBATCH --partition=gpuA100x4-interactive
+#SBATCH --partition=gpuA100x4
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
@@ -39,7 +39,7 @@ python scripts/02_train_model.py \
   --num_layers 2 \
   --learning_rate 0.0017331607338165434 \
   --batch_size 64 \
-  --epochs 100 \
+  --epochs 10 \
   --dropout 0.23487409763750228 \
   --early_stopping_patience 10 \
   --device cuda \

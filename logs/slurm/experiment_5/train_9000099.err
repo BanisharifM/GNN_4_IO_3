@@ -1,0 +1,13 @@
+2025-04-09 22:37:58,205 - INFO - Using device: cuda
+2025-04-09 22:37:58,206 - INFO - Using split-based workflow with directories: data/preprocessed/baseline_gcn/experiment_3/train, data/preprocessed/baseline_gcn/experiment_3/val, data/preprocessed/baseline_gcn/experiment_3/test
+2025-04-09 22:38:01,093 - INFO - Creating datasets from split directories...
+2025-04-09 22:41:37,061 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-09 22:41:37,061 - INFO - Creating GAT model with 2 layers and 256 hidden dimensions
+2025-04-09 22:41:37,245 - INFO - Initialized GAT model with 2 layers and 256 hidden dimensions
+2025-04-09 22:41:37,246 - INFO - Initialized GNN regressor with GAT backbone
+2025-04-09 22:41:37,771 - INFO - Found checkpoint at logs/training/baseline_gat/experiment_5/latest_checkpoint.pt. Resuming training...
+2025-04-09 22:41:37,796 - INFO - Resuming from epoch 5 with best validation loss 0.759001 at epoch 1
+2025-04-09 22:41:37,796 - INFO - Starting training for 20 epochs (from epoch 6)
+2025-04-09 22:52:01,760 - INFO - Epoch 6/20, Train Loss: 0.9496, Val Loss: 0.9490
+2025-04-09 23:02:12,361 - INFO - Epoch 7/20, Train Loss: 0.9496, Val Loss: 0.9490
+slurmstepd: error: *** JOB 9000099 ON gpua053 CANCELLED AT 2025-04-09T23:04:22 ***

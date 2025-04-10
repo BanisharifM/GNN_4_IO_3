@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=64
 #SBATCH --gres=gpu:1
 #SBATCH --mem=128G
-#SBATCH --time=03:00:00
+#SBATCH --time=01:00:00
 #SBATCH --output=logs/slurm/experiment_4/train_%j.out
 #SBATCH --error=logs/slurm/experiment_4/train_%j.err
 
@@ -39,7 +39,7 @@ python scripts/02_train_model.py \
   --num_layers 2 \
   --learning_rate 0.0017331607338165434 \
   --batch_size 64 \
-  --epochs 100 \
+  --epochs 20 \
   --dropout 0.23487409763750228 \
   --early_stopping_patience 10 \
   --device cuda \

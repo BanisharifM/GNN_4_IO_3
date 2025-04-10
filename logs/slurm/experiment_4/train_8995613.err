@@ -22,3 +22,7 @@
 2025-04-09 21:48:04,537 - INFO - Epoch 15/100, Train Loss: 0.6611, Val Loss: 0.6246
 2025-04-09 21:48:04,565 - INFO - Saved best model with validation loss: 0.6246
 2025-04-09 21:57:13,016 - INFO - Epoch 16/100, Train Loss: 0.6610, Val Loss: 0.6290
+2025-04-09 22:06:21,695 - INFO - Epoch 17/100, Train Loss: 0.6608, Val Loss: 0.6259
+2025-04-09 22:15:29,613 - INFO - Epoch 18/100, Train Loss: 0.6609, Val Loss: 0.6261
+2025-04-09 22:24:36,314 - INFO - Epoch 19/100, Train Loss: 0.6608, Val Loss: 0.6313
+slurmstepd: error: *** JOB 8995613 ON gpua048 CANCELLED AT 2025-04-09T22:26:10 ***
