@@ -1,0 +1,9 @@
+Starting model training at Thu Apr 10 01:21:28 CDT 2025
+
+Training Results:
+Best Epoch: 1
+Best Validation Loss: 0.7590
+Test Loss: 0.7588
+Test RMSE: 0.8711
+Training Time: 1850.53 seconds
+Training completed at Thu Apr 10 01:57:46 CDT 2025

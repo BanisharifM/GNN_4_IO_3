@@ -1,0 +1,11 @@
+2025-04-10 20:32:14,320 - INFO - Starting hyperparameter optimization with 40 configurations
+Traceback (most recent call last):
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/04_hyperparameter_optimization.py", line 378, in <module>
+    results = optimize_hyperparameters(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/04_hyperparameter_optimization.py", line 250, in optimize_hyperparameters
+    scheduler = ASHAScheduler(
+                ^^^^^^^^^^^^^^
+  File "/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/ray/tune/schedulers/async_hyperband.py", line 63, in __init__
+    assert max_t >= grace_period, "grace_period must be <= max_t!"
+AssertionError: grace_period must be <= max_t!

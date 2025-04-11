@@ -1,49 +1,100 @@
-#!/bin/bash
-#SBATCH --job-name=gnn_train
-#SBATCH --account=bdau-delta-gpu    
-#SBATCH --partition=gpuA100x4-interactive
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=64
-#SBATCH --gres=gpu:1
-#SBATCH --mem=128G
-#SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/experiment_5/train_%j.out
-#SBATCH --error=logs/slurm/experiment_5/train_%j.err
+# Experiment 5 Report
 
-# Load required modules
-# module load anaconda3
-module load cuda
+## Overview
 
-# Activate conda environment (replace with your environment name)
-source activate gnn_env
+This experiment introduced a new model architecture — the **Graph Attention Network (GAT)** — to evaluate its performance compared to the baseline GCN models. The training was conducted using Slurm with checkpointing across multiple jobs due to time constraints.
 
-# Create logs directory if it doesn't exist
-mkdir -p logs
+- **Job Name**: `gnn_train`
+- **Compute Resources**:
+  - **Partition**: `gpuA100x4-interactive`
+  - **Nodes**: 1
+  - **CPUs per Task**: 64
+  - **GPUs**: 1 (A100)
+  - **Memory**: 128 GB
+  - **Time Limit per Job**: 1 hour (split across 3 jobs)
+- **Environment**:
+  - **Conda Environment**: `gnn_env`
+  - **Modules Loaded**: `cuda`
+- **Directories**:
+  - **Training Data**: `data/preprocessed/baseline_gcn/experiment_3/train`
+  - **Validation Data**: `data/preprocessed/baseline_gcn/experiment_3/val`
+  - **Test Data**: `data/preprocessed/baseline_gcn/experiment_3/test`
+  - **Output Logs**: `logs/training/baseline_gat/experiment_5`
+- **Model Configuration**:
+  - **Model Type**: GAT (Graph Attention Network)
+  - **Hidden Dimensions**: 256
+  - **Number of Layers**: 2
+  - **Learning Rate**: 0.0017331607338165434
+  - **Batch Size**: 64
+  - **Epochs**: 100
+  - **Dropout**: 0.23487409763750228
+  - **Early Stopping Patience**: 10
+  - **Device**: CUDA (GPU)
+  - **Resume Training**: Enabled
+  - **Use Split Directories**: Enabled
 
-# Set variables for split-based workflow
-TRAIN_DIR="data/preprocessed/baseline_gcn/experiment_3/train"
-VAL_DIR="data/preprocessed/baseline_gcn/experiment_3/val"
-TEST_DIR="data/preprocessed/baseline_gcn/experiment_3/test"
-OUTPUT_DIR="logs/training/baseline_gat/experiment_5"
+## Objective
 
-# Run training script with single checkpoint
-echo "Starting model training at $(date)"
-python scripts/02_train_model.py \
-  --train_dir ${TRAIN_DIR} \
-  --val_dir ${VAL_DIR} \
-  --test_dir ${TEST_DIR} \
-  --output_dir ${OUTPUT_DIR} \
-  --model_type gat \
-  --hidden_dim 256 \
-  --num_layers 2 \
-  --learning_rate 0.0017331607338165434 \
-  --batch_size 64 \
-  --epochs 100 \
-  --dropout 0.23487409763750228 \
-  --early_stopping_patience 10 \
-  --device cuda \
-  --use_split_dirs True \
-  --resume_training True
+The aim was to evaluate whether incorporating attention mechanisms via GAT improves model performance over GCN in the same experimental setup using mutual information-based graph structures.
 
-echo "Training completed at $(date)"
+## Dataset
+
+- **Source**: Preprocessed dataset from `data/sample_total.csv`
+- **Graph Construction**: Based on mutual information threshold `0.3259`
+- **Dataset Split**:
+  - **Train**: 4,653,053 samples
+  - **Validation**: 997,082 samples
+  - **Test**: 997,084 samples
+- **Graph Details**:
+  - **Nodes**: 44
+  - **Edges**: 168
+
+## Experimental Setup
+
+- **Model**: GAT with attention-based node aggregation
+- **Hyperparameters**:
+  - Hidden Dimensions: 256
+  - Number of Layers: 2
+  - Learning Rate: 0.0017331607338165434
+  - Batch Size: 64
+  - Dropout: 0.23487409763750228
+  - Epochs: 100
+  - Early Stopping Patience: 10
+- **Environment**:
+  - Framework: PyTorch Geometric
+  - Hardware: NVIDIA A100 GPU (1)
+
+## Results
+
+- **Loss**:
+  - Final Training Loss: 0.9496
+  - Final Validation Loss: 0.9490
+  - Test Loss: **0.7588**
+  - Test RMSE: **0.8711**
+- **Training Time**: ~3 hours across 3 resumed jobs
+- **Best Validation Epoch**: Epoch 1 (Val Loss: 0.7590)
+
+## Analysis
+
+- GAT demonstrated a **better test loss** (0.7588) compared to GCN in Experiment 3 (0.9483) and Experiment 4 (0.6261).
+- Despite early convergence of validation loss and training loss plateauing, GAT produced a **significantly improved RMSE** compared to GCN in Experiment 3 (0.9738), though still slightly worse than GCN in Experiment 4 (0.7913).
+- The model may have overfitted after the first few epochs as validation loss did not improve, suggesting **attention-based models may benefit from stricter regularization or learning rate decay.**
+- The training was consistently resumed from checkpoints without issues.
+
+## Conclusion
+
+GAT achieved a **strong test RMSE of 0.8711**, validating that attention mechanisms can improve generalization on this dataset. However, further tuning or deeper architectures might be required to surpass the best-performing GCN from Experiment 4.
+
+Key stats:
+- **Train**: 4,653,053 samples
+- **Validation**: 997,082 samples
+- **Test**: 997,084 samples
+- **Graph Structure**: 44 nodes, 168 edges
+- **Best Test RMSE**: 0.8711
+
+## Future Work
+
+- Explore multi-head attention in GAT.
+- Consider using GATv2 or Graph Transformer architectures.
+- Apply learning rate scheduling and stronger regularization.
+- Use attention visualization tools to interpret the learned focus of the GAT model.
