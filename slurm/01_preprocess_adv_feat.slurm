@@ -1,14 +1,14 @@
 #!/bin/bash
 #SBATCH --job-name=preprocess_adv_feat
-#SBATCH --account=YOUR_ACCOUNT
-#SBATCH --partition=compute
+#SBATCH --account=bdau-delta-cpu
+#SBATCH --partition=cpu-interactive
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
-#SBATCH --time=2:00:00
-#SBATCH --output=logs/preprocess_adv_feat_%j.out
-#SBATCH --error=logs/preprocess_adv_feat_%j.err
+#SBATCH --mem=32G
+#SBATCH --time=01:00:00
+#SBATCH --output=logs/slurm/experiment_6/preprocess_adv_feat_%j.out
+#SBATCH --error=logs/slurm/experiment_6/preprocess_adv_feat_%j.err
 
 # Load required modules
 module load anaconda3
@@ -20,8 +20,8 @@ source activate gnn-env
 mkdir -p logs
 
 # Set variables
-DATA_DIR="data/split_data/sample_100"
-OUTPUT_BASE_DIR="data/preprocessed/adv_feat_gcn/experiment_2"
+DATA_DIR="data/split_data/sample_total"
+OUTPUT_BASE_DIR="data/preprocessed/adv_feat"
 MI_FILE="data/mutual_information2.csv"
 MI_THRESHOLD=0.3259
 TOP_FEATURES=15
@@ -33,7 +33,7 @@ echo "Starting advanced feature selection preprocessing..."
 
 # Process training data
 echo "Preprocessing train data from ${DATA_DIR}/train.csv..."
-python 01_preprocess_data_paper_based.py \
+python 01_preprocess_data.py \
   --data_file ${DATA_DIR}/train.csv \
   --mi_file ${MI_FILE} \
   --output_dir ${OUTPUT_BASE_DIR}/train \
@@ -44,7 +44,7 @@ python 01_preprocess_data_paper_based.py \
 
 # Process validation data
 echo "Preprocessing val data from ${DATA_DIR}/val.csv..."
-python 01_preprocess_data_paper_based.py \
+python 01_preprocess_data.py \
   --data_file ${DATA_DIR}/val.csv \
   --mi_file ${MI_FILE} \
   --output_dir ${OUTPUT_BASE_DIR}/val \
@@ -55,12 +55,12 @@ python 01_preprocess_data_paper_based.py \
 
 # Process test data
 echo "Preprocessing test data from ${DATA_DIR}/test.csv..."
-python 01_preprocess_data_paper_based.py \
+python 01_preprocess_data.py \
   --data_file ${DATA_DIR}/test.csv \
   --mi_file ${MI_FILE} \
   --output_dir ${OUTPUT_BASE_DIR}/test \
-  --mi_threshold ${MI_THRESHOLD} \
   --use_advanced_feature_selection True \
+  --mi_threshold ${MI_THRESHOLD} \
   --top_features ${TOP_FEATURES} \
   --split_type test
 
