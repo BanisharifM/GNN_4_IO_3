@@ -15,7 +15,7 @@ from typing import Dict, List, Tuple, Optional
 # Add the src directory to the path so we can import the modules
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
-from src.data import IOCounterGraph, IOGraphDataset, ClusteringModel
+from src.data import IOCounterGraph, IOGraphDataset
 
 def setup_logging():
     """Set up logging configuration."""
@@ -35,12 +35,8 @@ def parse_args():
     parser.add_argument('--mi_threshold', type=float, default=0.3259, help='Threshold for mutual information')
     parser.add_argument('--use_advanced_feature_selection', type=lambda x: x.lower() == 'true', default=False, 
                         help='Whether to use advanced feature selection')
-    parser.add_argument('--top_features', type=int, default=10, 
-                        help='Number of top features to select when using advanced feature selection')
     parser.add_argument('--use_clustering', type=lambda x: x.lower() == 'true', default=False,
                         help='Whether to use clustering')
-    parser.add_argument('--num_clusters', type=int, default=4,
-                        help='Number of clusters to use when clustering is enabled')
     parser.add_argument('--split_type', type=str, choices=['train', 'val', 'test', 'all'], default='all',
                         help='Type of split for the input file. Use "all" if the file contains all data that needs to be split.')
     parser.add_argument('--train_ratio', type=float, default=0.7, help='Ratio of training data')
@@ -55,9 +51,7 @@ def preprocess_data(
     output_dir: str,
     mi_threshold: float = 0.3259,
     use_advanced_feature_selection: bool = False,
-    top_features: int = 10,
     use_clustering: bool = False,
-    num_clusters: int = 4,
     split_type: str = 'all',
     train_ratio: float = 0.7,
     val_ratio: float = 0.15,
@@ -73,9 +67,7 @@ def preprocess_data(
         output_dir: Directory to save preprocessed data
         mi_threshold: Threshold for mutual information
         use_advanced_feature_selection: Whether to use advanced feature selection
-        top_features: Number of top features to select when using advanced feature selection
         use_clustering: Whether to use clustering
-        num_clusters: Number of clusters to use when clustering is enabled
         split_type: Type of split for the input file ('train', 'val', 'test', or 'all')
         train_ratio: Ratio of training data
         val_ratio: Ratio of validation data
@@ -100,51 +92,13 @@ def preprocess_data(
     logger.info(f"Constructing graph with MI threshold: {mi_threshold}")
     graph_constructor = IOCounterGraph(mi_threshold=mi_threshold)
     mi_df = graph_constructor.load_mutual_information(mi_file)
-    
-    # Apply advanced feature selection if requested
-    if use_advanced_feature_selection:
-        logger.info(f"Using advanced feature selection to select top {top_features} features")
-        edge_index, edge_attr = graph_constructor.construct_graph(
-            mi_df, 
-            use_advanced_feature_selection=True,
-            target_col='tag',
-            top_n=top_features
-        )
-        
-        # Save selected features
-        if graph_constructor.selected_features:
-            with open(os.path.join(output_dir, 'selected_features.json'), 'w') as f:
-                json.dump(graph_constructor.selected_features, f, indent=2)
-            logger.info(f"Saved selected features to {os.path.join(output_dir, 'selected_features.json')}")
-    else:
-        # Use standard graph construction
-        edge_index, edge_attr = graph_constructor.construct_graph(mi_df)
+    edge_index, edge_attr = graph_constructor.construct_graph(mi_df)
     
     # Export graph structure
     graph_constructor.export_graph_structure(output_dir)
     
     # Save counter mapping
     graph_constructor.save_counter_mapping(output_dir)
-    
-    # Apply clustering if requested
-    clustering_model = None
-    if use_clustering:
-        logger.info(f"Applying clustering with {num_clusters} clusters")
-        clustering_model = ClusteringModel(n_clusters=num_clusters)
-        
-        # Use selected features from feature selection if available
-        initial_features = graph_constructor.selected_features if graph_constructor.selected_features else None
-        
-        # Fit clustering model
-        cluster_labels = clustering_model.fit(data_df, target_col='tag', initial_features=initial_features)
-        
-        # Add cluster labels to data
-        data_df['cluster'] = cluster_labels
-        
-        # Export clustering information
-        clustering_model.export_cluster_info(output_dir, data_df, cluster_labels)
-        
-        logger.info(f"Clustering completed. {num_clusters} clusters created.")
     
     # Extract node features
     logger.info("Extracting node features...")
@@ -171,11 +125,6 @@ def preprocess_data(
             edge_attr=edge_attr,    # Same for all samples
             y=targets[i].view(-1)   # [1]
         )
-        
-        # Add cluster information if available
-        if use_clustering:
-            data.cluster = torch.tensor([data_df.iloc[i]['cluster']], dtype=torch.long)
-        
         data_list.append(data)
     
     # Save preprocessed data
@@ -236,19 +185,6 @@ def preprocess_data(
             f'{split_type}_size': len(data_list)
         }
     
-    # Add feature selection and clustering information to statistics
-    if use_advanced_feature_selection:
-        stats['feature_selection'] = 'min_max_mutual_information'
-        stats['num_selected_features'] = len(graph_constructor.selected_features) if graph_constructor.selected_features else 0
-    
-    if use_clustering:
-        stats['clustering'] = 'kmeans_with_sbs'
-        stats['num_clusters'] = num_clusters
-        
-        # Add cluster statistics
-        if clustering_model and clustering_model.cluster_stats:
-            stats['cluster_stats'] = clustering_model.cluster_stats
-    
     # Save statistics
     with open(os.path.join(output_dir, 'stats.json'), 'w') as f:
         json.dump(stats, f, indent=2)
@@ -257,8 +193,7 @@ def preprocess_data(
     
     # Log statistics
     for key, value in stats.items():
-        if key != 'cluster_stats':  # Skip detailed cluster stats in log
-            logger.info(f"{key}: {value}")
+        logger.info(f"{key}: {value}")
     
     return stats
 
@@ -277,9 +212,7 @@ def main():
         output_dir=args.output_dir,
         mi_threshold=args.mi_threshold,
         use_advanced_feature_selection=args.use_advanced_feature_selection,
-        top_features=args.top_features,
         use_clustering=args.use_clustering,
-        num_clusters=args.num_clusters,
         split_type=args.split_type,
         train_ratio=args.train_ratio,
         val_ratio=args.val_ratio,
@@ -290,8 +223,7 @@ def main():
     # Print statistics
     print("\nPreprocessing Statistics:")
     for key, value in stats.items():
-        if key != 'cluster_stats':  # Skip detailed cluster stats in output
-            print(f"{key}: {value}")
+        print(f"{key}: {value}")
 
 if __name__ == "__main__":
     main()

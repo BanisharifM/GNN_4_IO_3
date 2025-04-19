@@ -6,6 +6,9 @@ import pandas as pd
 import torch
 from torch_geometric.data import Data
 from typing import List, Tuple, Dict, Optional
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score, davies_bouldin_score
+from sklearn.preprocessing import StandardScaler
 
 class IOCounterGraph:
     """
@@ -24,6 +27,7 @@ class IOCounterGraph:
         self.edge_index = None
         self.edge_attr = None
         self.logger = logging.getLogger(__name__)
+        self.selected_features = None
         
     def load_mutual_information(self, mi_file_path: str) -> pd.DataFrame:
         """
@@ -41,13 +45,83 @@ class IOCounterGraph:
         mi_df = pd.read_csv(mi_file_path, index_col=0)
         
         return mi_df
+    
+    def min_max_mutual_information_selection(self, mi_df: pd.DataFrame, target_col: str = 'tag', top_n: int = 10) -> List[str]:
+        """
+        Implement Min-max mutual information feature selection from HiPC21 paper.
         
-    def construct_graph(self, mi_df: pd.DataFrame) -> Tuple[torch.Tensor, torch.Tensor]:
+        Args:
+            mi_df: DataFrame containing mutual information values
+            target_col: Target column name
+            top_n: Number of top features to select
+            
+        Returns:
+            List of selected feature names
+        """
+        self.logger.info(f"Performing Min-max mutual information feature selection to select top {top_n} features")
+        
+        # Get all counter names excluding the target column
+        all_counters = [col for col in mi_df.columns if col != target_col and col != 'nprocs']
+        
+        # Calculate correlation with target for all features
+        target_correlations = {}
+        for counter in all_counters:
+            if target_col in mi_df.index and counter in mi_df.columns:
+                target_correlations[counter] = abs(float(mi_df.loc[target_col, counter]))
+            else:
+                target_correlations[counter] = 0.0
+        
+        # Sort features by correlation with target
+        sorted_by_target = sorted(target_correlations.items(), key=lambda x: x[1], reverse=True)
+        
+        # Select the first feature (most correlated with target)
+        selected_features = [sorted_by_target[0][0]]
+        
+        # Iteratively select remaining features
+        while len(selected_features) < min(top_n, len(all_counters)):
+            # Calculate correlation with already selected features
+            feature_correlations = {}
+            
+            for counter in all_counters:
+                if counter in selected_features:
+                    continue
+                
+                # Calculate average correlation with already selected features
+                avg_correlation = 0.0
+                for selected in selected_features:
+                    if selected in mi_df.index and counter in mi_df.columns:
+                        avg_correlation += abs(float(mi_df.loc[selected, counter]))
+                    elif counter in mi_df.index and selected in mi_df.columns:
+                        avg_correlation += abs(float(mi_df.loc[counter, selected]))
+                
+                avg_correlation /= len(selected_features)
+                feature_correlations[counter] = avg_correlation
+            
+            # Sort by correlation with selected features (ascending)
+            sorted_by_correlation = sorted(feature_correlations.items(), key=lambda x: x[1])
+            
+            # Take top 10 least correlated features
+            candidates = sorted_by_correlation[:10]
+            
+            # From these candidates, select the one with highest correlation to target
+            best_candidate = max(candidates, key=lambda x: target_correlations[x[0]])
+            
+            # Add to selected features
+            selected_features.append(best_candidate[0])
+        
+        self.logger.info(f"Selected features: {selected_features}")
+        self.selected_features = selected_features
+        return selected_features
+        
+    def construct_graph(self, mi_df: pd.DataFrame, use_advanced_feature_selection: bool = False, target_col: str = 'tag', top_n: int = 10) -> Tuple[torch.Tensor, torch.Tensor]:
         """
         Construct a graph from mutual information data.
         
         Args:
             mi_df: DataFrame containing mutual information values
+            use_advanced_feature_selection: Whether to use advanced feature selection
+            target_col: Target column name for feature selection
+            top_n: Number of top features to select
             
         Returns:
             Tuple of (edge_index, edge_attr) tensors
@@ -55,13 +129,31 @@ class IOCounterGraph:
         self.logger.info(f"Constructing graph with MI threshold: {self.mi_threshold}")
         
         # Get counter names from the DataFrame columns (excluding the index column)
-        self.counter_names = [col for col in mi_df.columns if col != 'tag' and col != 'nprocs']
+        all_counters = [col for col in mi_df.columns if col != target_col and col != 'nprocs']
         
-        # Create mapping from counter name to index
-        self.counter_to_idx = {name: idx for idx, name in enumerate(self.counter_names)}
-        
-        # Construct graph using threshold
-        return self._construct_graph_with_threshold(mi_df)
+        # Apply feature selection if requested
+        if use_advanced_feature_selection:
+            self.logger.info("Using advanced feature selection")
+            selected_features = self.min_max_mutual_information_selection(mi_df, target_col, top_n)
+            self.counter_names = selected_features
+            
+            # Filter mutual information matrix to only include selected features
+            filtered_mi_df = mi_df.loc[selected_features, selected_features]
+            
+            # Create mapping from counter name to index
+            self.counter_to_idx = {name: idx for idx, name in enumerate(selected_features)}
+            
+            # Construct graph using threshold and filtered MI matrix
+            return self._construct_graph_with_threshold(filtered_mi_df)
+        else:
+            # Use all counters
+            self.counter_names = all_counters
+            
+            # Create mapping from counter name to index
+            self.counter_to_idx = {name: idx for idx, name in enumerate(all_counters)}
+            
+            # Construct graph using threshold
+            return self._construct_graph_with_threshold(mi_df)
     
     def _construct_graph_with_threshold(self, mi_df: pd.DataFrame) -> Tuple[torch.Tensor, torch.Tensor]:
         """
@@ -167,7 +259,7 @@ class IOCounterGraph:
         
     def export_graph_structure(self, output_dir: str):
         """
-        Export the graph structure to JSON, CSV, and PyTorch (.pt) formats.
+        Export the graph structure to JSON format.
         
         Args:
             output_dir: Directory to save the graph structure
@@ -216,17 +308,238 @@ class IOCounterGraph:
         nodes_df.to_csv(nodes_csv, index=False)
         self.logger.info(f"Exported graph nodes to {nodes_csv}")
         
-        # Save edge_index and edge_attr as PyTorch tensors with the exact filenames expected by 02_train_model.py
-        if self.edge_index is not None and self.edge_attr is not None:
-            # Save edge_index tensor
-            edge_index_file = os.path.join(output_dir, "edge_index.pt")
-            torch.save(self.edge_index, edge_index_file)
-            self.logger.info(f"Exported graph edges tensor to {edge_index_file}")
+        # Save edge_index and edge_attr as PyTorch tensors
+        if self.edge_index is not None:
+            torch.save(self.edge_index, os.path.join(output_dir, 'edge_index.pt'))
+            self.logger.info(f"Saved edge_index tensor to {os.path.join(output_dir, 'edge_index.pt')}")
+        
+        if self.edge_attr is not None:
+            torch.save(self.edge_attr, os.path.join(output_dir, 'edge_attr.pt'))
+            self.logger.info(f"Saved edge_attr tensor to {os.path.join(output_dir, 'edge_attr.pt')}")
+
+
+class ClusteringModel:
+    """
+    Class for clustering I/O data based on the HiPC21 paper approach.
+    """
+    def __init__(self, n_clusters: int = 4):
+        """
+        Initialize the clustering model.
+        
+        Args:
+            n_clusters: Number of clusters to create
+        """
+        self.n_clusters = n_clusters
+        self.kmeans = KMeans(n_clusters=n_clusters, random_state=42)
+        self.scaler = StandardScaler()
+        self.logger = logging.getLogger(__name__)
+        self.selected_features = None
+        self.cluster_stats = None
+        
+    def sequential_backward_selection(self, data: pd.DataFrame, initial_features: List[str], min_features: int = 3) -> List[str]:
+        """
+        Implement Sequential Backward Selection (SBS) for feature selection in clustering.
+        
+        Args:
+            data: DataFrame containing feature values
+            initial_features: Initial set of features to start with
+            min_features: Minimum number of features to keep
             
-            # Save edge_attr tensor
-            edge_attr_file = os.path.join(output_dir, "edge_attr.pt")
-            torch.save(self.edge_attr, edge_attr_file)
-            self.logger.info(f"Exported graph edge attributes tensor to {edge_attr_file}")
+        Returns:
+            List of selected feature names
+        """
+        self.logger.info(f"Performing Sequential Backward Selection starting with {len(initial_features)} features")
+        
+        current_features = initial_features.copy()
+        best_score = -float('inf')
+        best_features = current_features.copy()
+        
+        while len(current_features) > min_features:
+            feature_subsets = []
+            
+            # Create feature subsets by removing one feature at a time
+            for i in range(len(current_features)):
+                subset = current_features.copy()
+                removed = subset.pop(i)
+                feature_subsets.append((subset, removed))
+            
+            # Evaluate each subset
+            subset_scores = []
+            for subset, removed in feature_subsets:
+                # Extract features for clustering
+                X = data[subset].values
+                X = self.scaler.fit_transform(X)
+                
+                # Perform clustering
+                self.kmeans.fit(X)
+                labels = self.kmeans.labels_
+                
+                # Calculate evaluation metrics
+                if len(np.unique(labels)) > 1:  # Ensure we have at least 2 clusters
+                    silhouette = silhouette_score(X, labels)
+                    dbi = davies_bouldin_score(X, labels)
+                    
+                    # Combined score (higher is better)
+                    combined_score = silhouette / dbi
+                else:
+                    combined_score = -float('inf')
+                
+                subset_scores.append((subset, removed, combined_score))
+            
+            # Find the best subset
+            best_subset = max(subset_scores, key=lambda x: x[2])
+            
+            # Update current features
+            current_features = best_subset[0]
+            
+            # Update best features if score improved
+            if best_subset[2] > best_score:
+                best_score = best_subset[2]
+                best_features = current_features.copy()
+            
+            self.logger.info(f"Removed feature '{best_subset[1]}', new score: {best_subset[2]:.4f}, remaining features: {len(current_features)}")
+        
+        self.logger.info(f"Selected features after SBS: {best_features}")
+        self.selected_features = best_features
+        return best_features
+    
+    def fit(self, data: pd.DataFrame, target_col: str = 'tag', use_sbs: bool = True, initial_features: List[str] = None) -> np.ndarray:
+        """
+        Fit the clustering model to the data.
+        
+        Args:
+            data: DataFrame containing feature values
+            target_col: Target column name
+            use_sbs: Whether to use Sequential Backward Selection
+            initial_features: Initial set of features to use (if None, use all features except target)
+            
+        Returns:
+            Cluster assignments for each data point
+        """
+        self.logger.info(f"Fitting clustering model with {self.n_clusters} clusters")
+        
+        # Determine features to use
+        if initial_features is None:
+            initial_features = [col for col in data.columns if col != target_col and col != 'nprocs']
+        
+        # Apply SBS if requested
+        if use_sbs:
+            selected_features = self.sequential_backward_selection(data, initial_features)
+        else:
+            selected_features = initial_features
+            self.selected_features = selected_features
+        
+        # Extract features for clustering
+        X = data[selected_features].values
+        X = self.scaler.fit_transform(X)
+        
+        # Perform clustering
+        self.kmeans.fit(X)
+        labels = self.kmeans.labels_
+        
+        # Calculate cluster statistics
+        self.calculate_cluster_statistics(data, labels, target_col)
+        
+        return labels
+    
+    def calculate_cluster_statistics(self, data: pd.DataFrame, labels: np.ndarray, target_col: str = 'tag'):
+        """
+        Calculate statistics for each cluster.
+        
+        Args:
+            data: DataFrame containing feature values
+            labels: Cluster assignments
+            target_col: Target column name
+        """
+        self.logger.info("Calculating cluster statistics")
+        
+        # Add cluster labels to data
+        data_with_clusters = data.copy()
+        data_with_clusters['cluster'] = labels
+        
+        # Calculate statistics for each cluster
+        cluster_stats = {}
+        for cluster_id in range(self.n_clusters):
+            cluster_data = data_with_clusters[data_with_clusters['cluster'] == cluster_id]
+            
+            # Calculate statistics for target variable
+            target_mean = cluster_data[target_col].mean()
+            target_std = cluster_data[target_col].std()
+            target_count = len(cluster_data)
+            
+            # Store statistics
+            cluster_stats[cluster_id] = {
+                'count': target_count,
+                'target_mean': target_mean,
+                'target_std': target_std
+            }
+            
+            self.logger.info(f"Cluster {cluster_id}: {target_count} samples, target mean: {target_mean:.4f}, target std: {target_std:.4f}")
+        
+        self.cluster_stats = cluster_stats
+    
+    def predict(self, data: pd.DataFrame) -> np.ndarray:
+        """
+        Predict cluster assignments for new data.
+        
+        Args:
+            data: DataFrame containing feature values
+            
+        Returns:
+            Cluster assignments for each data point
+        """
+        if self.selected_features is None:
+            raise ValueError("Model has not been fitted yet")
+        
+        # Extract features for clustering
+        X = data[self.selected_features].values
+        X = self.scaler.transform(X)
+        
+        # Predict clusters
+        labels = self.kmeans.predict(X)
+        
+        return labels
+    
+    def export_cluster_info(self, output_dir: str, data: pd.DataFrame = None, labels: np.ndarray = None):
+        """
+        Export clustering information to files.
+        
+        Args:
+            output_dir: Directory to save the clustering information
+            data: DataFrame containing feature values (optional)
+            labels: Cluster assignments (optional)
+        """
+        os.makedirs(output_dir, exist_ok=True)
+        
+        # Export selected features
+        if self.selected_features is not None:
+            features_file = os.path.join(output_dir, "cluster_features.json")
+            with open(features_file, 'w') as f:
+                json.dump(self.selected_features, f, indent=2)
+            self.logger.info(f"Exported cluster features to {features_file}")
+        
+        # Export cluster statistics
+        if self.cluster_stats is not None:
+            stats_file = os.path.join(output_dir, "cluster_stats.json")
+            with open(stats_file, 'w') as f:
+                json.dump(self.cluster_stats, f, indent=2)
+            self.logger.info(f"Exported cluster statistics to {stats_file}")
+        
+        # Export cluster centers
+        if hasattr(self.kmeans, 'cluster_centers_'):
+            centers_file = os.path.join(output_dir, "cluster_centers.npy")
+            np.save(centers_file, self.kmeans.cluster_centers_)
+            self.logger.info(f"Exported cluster centers to {centers_file}")
+        
+        # Export data with cluster labels
+        if data is not None and labels is not None:
+            data_with_clusters = data.copy()
+            data_with_clusters['cluster'] = labels
+            
+            # Save to CSV
+            csv_file = os.path.join(output_dir, "data_with_clusters.csv")
+            data_with_clusters.to_csv(csv_file, index=False)
+            self.logger.info(f"Exported data with cluster labels to {csv_file}")
 
 
 class IOGraphDataset:
@@ -238,7 +551,9 @@ class IOGraphDataset:
                  mi_file: str, 
                  mi_threshold: float = 0.3259,
                  use_advanced_feature_selection: bool = False,
-                 use_clustering: bool = False):
+                 use_clustering: bool = False,
+                 top_features: int = 10,
+                 n_clusters: int = 4):
         """
         Initialize the dataset.
         
@@ -248,20 +563,27 @@ class IOGraphDataset:
             mi_threshold: Threshold for mutual information to create an edge
             use_advanced_feature_selection: Whether to use advanced feature selection
             use_clustering: Whether to use clustering
+            top_features: Number of top features to select for advanced feature selection
+            n_clusters: Number of clusters for clustering
         """
         self.data_file = data_file
         self.mi_file = mi_file
         self.mi_threshold = mi_threshold
         self.use_advanced_feature_selection = use_advanced_feature_selection
         self.use_clustering = use_clustering
+        self.top_features = top_features
+        self.n_clusters = n_clusters
         self.logger = logging.getLogger(__name__)
         
-    def process(self) -> List[Data]:
+    def process(self, output_dir: str = None) -> Tuple[List[Data], IOCounterGraph, Optional[ClusteringModel]]:
         """
         Process the dataset.
         
+        Args:
+            output_dir: Directory to save intermediate results (optional)
+            
         Returns:
-            List of PyTorch Geometric Data objects
+            Tuple of (data_list, graph_constructor, clustering_model)
         """
         # Load data
         self.logger.info(f"Loading data from {self.data_file}")
@@ -273,7 +595,33 @@ class IOGraphDataset:
         # Construct graph
         graph_constructor = IOCounterGraph(mi_threshold=self.mi_threshold)
         mi_df = graph_constructor.load_mutual_information(self.mi_file)
-        edge_index, edge_attr = graph_constructor.construct_graph(mi_df)
+        
+        # Apply advanced feature selection if requested
+        edge_index, edge_attr = graph_constructor.construct_graph(
+            mi_df, 
+            use_advanced_feature_selection=self.use_advanced_feature_selection,
+            target_col='tag',
+            top_n=self.top_features
+        )
+        
+        # Apply clustering if requested
+        clustering_model = None
+        if self.use_clustering:
+            self.logger.info("Applying clustering to data")
+            clustering_model = ClusteringModel(n_clusters=self.n_clusters)
+            
+            # Use selected features from feature selection if available
+            initial_features = graph_constructor.selected_features if graph_constructor.selected_features else None
+            
+            # Fit clustering model
+            cluster_labels = clustering_model.fit(data_df, target_col='tag', initial_features=initial_features)
+            
+            # Add cluster labels to data
+            data_df['cluster'] = cluster_labels
+            
+            # Export clustering information if output directory is provided
+            if output_dir:
+                clustering_model.export_cluster_info(output_dir, data_df, cluster_labels)
         
         # Get node features
         node_features = graph_constructor.get_node_features(data_df)
@@ -288,6 +636,11 @@ class IOGraphDataset:
                 edge_attr=edge_attr,    # Same for all samples
                 y=targets[i].view(-1)   # [1]
             )
+            
+            # Add cluster information if available
+            if self.use_clustering:
+                data.cluster = torch.tensor([data_df.iloc[i]['cluster']], dtype=torch.long)
+            
             data_list.append(data)
         
-        return data_list, graph_constructor
+        return data_list, graph_constructor, clustering_model
