@@ -1,25 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=preprocess_clustering
-#SBATCH --account=bdau-delta-gpu
-#SBATCH --partition=gpuA100x4-interactive            
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --gres=gpu:1                   
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
-#SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/experiment_6/preprocess_clustering_%j.out
-#SBATCH --error=logs/slurm/experiment_6/preprocess_clustering_%j.err
-
-# Load modules
-# module load anaconda3
-# module load cuda  # Optional if needed for envs with torch+GPU
-
-# Activate environment
-source activate gnn-env
-
-# Create logs directory if it doesn't exist
-mkdir -p logs
+# Simple script to preprocess data with clustering-based approach
 
 # Create output directories
 mkdir -p data/preprocessed/clustering/train
