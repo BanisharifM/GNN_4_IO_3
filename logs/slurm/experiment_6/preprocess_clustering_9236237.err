@@ -1,0 +1,19 @@
+2025-04-18 21:24:56 - INFO - Preprocessing data from data/split_data/sample_total/train.csv
+2025-04-18 21:24:56 - INFO - Using mutual information from data/mutual_information2.csv
+2025-04-18 21:24:56 - INFO - Loading data...
+2025-04-18 21:25:24 - INFO - Constructing graph with MI threshold: 0.3259
+2025-04-18 21:25:24 - INFO - Loading mutual information from data/mutual_information2.csv
+2025-04-18 21:25:24 - INFO - Constructing graph with MI threshold: 0.3259
+2025-04-18 21:25:24 - INFO - Created graph with 44 nodes and 84 edges
+2025-04-18 21:25:24 - INFO - Exported graph structure to data/preprocessed/clustering/train/graph_structure.json
+2025-04-18 21:25:24 - INFO - Exported graph edges to data/preprocessed/clustering/train/graph_edges.csv
+2025-04-18 21:25:24 - INFO - Exported graph nodes to data/preprocessed/clustering/train/graph_nodes.csv
+2025-04-18 21:25:24 - INFO - Saved edge_index tensor to data/preprocessed/clustering/train/edge_index.pt
+2025-04-18 21:25:24 - INFO - Saved edge_attr tensor to data/preprocessed/clustering/train/edge_attr.pt
+2025-04-18 21:25:24 - INFO - Saved counter mapping to data/preprocessed/clustering/train/counter_mapping.csv
+2025-04-18 21:25:24 - INFO - Applying clustering with 4 clusters
+2025-04-18 21:25:24 - INFO - Fitting clustering model with 4 clusters
+2025-04-18 21:25:24 - INFO - Performing Sequential Backward Selection starting with 44 features
+/u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning: The default value of `n_init` will change from 10 to 'auto' in 1.4. Set the value of `n_init` explicitly to suppress the warning
+  super()._check_params_vs_input(X, default_n_init=10)
+slurmstepd: error: *** JOB 9236237 ON gpua001 CANCELLED AT 2025-04-18T22:24:41 DUE TO TIME LIMIT ***

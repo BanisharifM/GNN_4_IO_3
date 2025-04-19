@@ -1,37 +1,47 @@
 #!/bin/bash
-#SBATCH --job-name=gnn_preprocess
-#SBATCH --account=YOUR_ACCOUNT
-#SBATCH --partition=gpu
+#SBATCH --job-name=preprocess_baseline
+#SBATCH --account=bdau-delta-gpu
+#SBATCH --partition=gpuA100x4-interactive
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=8
-#SBATCH --mem=32G
-#SBATCH --time=02:00:00
-#SBATCH --output=logs/preprocess_%j.out
-#SBATCH --error=logs/preprocess_%j.err
+#SBATCH --gres=gpu:1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=16G
+#SBATCH --time=01:00:00
+#SBATCH --output=logs/slurm/experiment_6/preprocess_baseline_%j.out
+#SBATCH --error=logs/slurm/experiment_6/preprocess_baseline_%j.err
 
-# Load required modules
-module load anaconda3
-module load cuda
+# Activate your environment
+source activate gnn-env
 
-# Activate conda environment (replace with your environment name)
-source activate gnn_env
-
-# Create logs directory if it doesn't exist
+# Logging
 mkdir -p logs
 
-# Set variables
-DATA_DIR="/path/to/data"
-OUTPUT_DIR="/path/to/preprocessed"
-SAMPLE_SIZE=1000  # Set to None for full dataset or a number for testing
+# Configurable parameters
+MI_THRESHOLD=0.20  # <=== CHANGE THIS FREELY
+CONFIG_TAG="mi${MI_THRESHOLD}"  # e.g. mi0.20
 
-# Run preprocessing script
-echo "Starting preprocessing at $(date)"
-python scripts/01_preprocess_data.py \
-  --data_file ${DATA_DIR}/sample_train_100.csv \
-  --mi_file ${DATA_DIR}/mutual_information2.csv \
-  --output_dir ${OUTPUT_DIR} \
-  --mi_threshold 0.3259 \
-  --sample_size ${SAMPLE_SIZE}
+# Paths
+BASE_DATA_DIR="data/split_data/sample_total"
+MI_FILE="data/mutual_information2.csv"
+OUTPUT_BASE_DIR="data/preprocessed/baseline/${CONFIG_TAG}"
 
-echo "Preprocessing completed at $(date)"
+# Create output directories
+for split in train val test; do
+    mkdir -p ${OUTPUT_BASE_DIR}/${split}
+done
+
+# Run preprocessing for each split
+for split in train val test; do
+    echo "Preprocessing ${split} data for baseline (mi_threshold=${MI_THRESHOLD})..."
+    python scripts/01_preprocess_data.py \
+      --data_file ${BASE_DATA_DIR}/${split}.csv \
+      --mi_file ${MI_FILE} \
+      --output_dir ${OUTPUT_BASE_DIR}/${split} \
+      --mi_threshold ${MI_THRESHOLD} \
+      --use_advanced_feature_selection False \
+      --use_clustering False \
+      --split_type ${split}
+done
+
+echo "Baseline preprocessing completed at $(date)"

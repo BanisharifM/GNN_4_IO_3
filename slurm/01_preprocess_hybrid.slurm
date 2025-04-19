@@ -1,74 +1,55 @@
 #!/bin/bash
 #SBATCH --job-name=preprocess_hybrid
-#SBATCH --account=YOUR_ACCOUNT
-#SBATCH --partition=compute
+#SBATCH --account=bdau-delta-gpu
+#SBATCH --partition=gpuA100x4-interactive
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
-#SBATCH --time=2:00:00
-#SBATCH --output=logs/preprocess_hybrid_%j.out
-#SBATCH --error=logs/preprocess_hybrid_%j.err
+#SBATCH --time=02:00:00
+#SBATCH --output=logs/slurm/experiment_6/preprocess_hybrid_%j.out
+#SBATCH --error=logs/slurm/experiment_6/preprocess_hybrid_%j.err
 
-# Load required modules
-module load anaconda3
+# Load modules
+# module load anaconda3
+# module load cuda  # Uncomment if needed for GPU-related packages
 
-# Activate conda environment (replace with your environment name)
+# Activate conda environment
 source activate gnn-env
 
-# Create logs directory if it doesn't exist
+# Create logs directory
 mkdir -p logs
 
-# Set variables
-DATA_DIR="data/split_data/sample_100"
-OUTPUT_BASE_DIR="data/preprocessed/hybrid_gcn/experiment_2"
-MI_FILE="data/mutual_information2.csv"
+# Parameters
 MI_THRESHOLD=0.3259
 TOP_FEATURES=15
 NUM_CLUSTERS=4
+CONFIG_TAG="mi${MI_THRESHOLD}_top${TOP_FEATURES}_k${NUM_CLUSTERS}"
+
+# Paths
+BASE_DATA_DIR="data/split_data/sample_total"
+MI_FILE="data/mutual_information2.csv"
+OUTPUT_BASE_DIR="data/preprocessed/hybrid/${CONFIG_TAG}"
 
 # Create output directories
-mkdir -p ${OUTPUT_BASE_DIR}/{train,val,test}
+for split in train val test; do
+    mkdir -p ${OUTPUT_BASE_DIR}/${split}
+done
 
-echo "Starting hybrid approach (advanced feature selection + clustering) preprocessing..."
+# Run preprocessing with hybrid config (feature selection + clustering)
+for split in train val test; do
+    echo "Preprocessing ${split} data with hybrid method (feature selection + clustering)..."
+    python scripts/01_preprocess_data.py \
+      --data_file ${BASE_DATA_DIR}/${split}.csv \
+      --mi_file ${MI_FILE} \
+      --output_dir ${OUTPUT_BASE_DIR}/${split} \
+      --mi_threshold ${MI_THRESHOLD} \
+      --use_advanced_feature_selection True \
+      --top_features ${TOP_FEATURES} \
+      --use_clustering True \
+      --num_clusters ${NUM_CLUSTERS} \
+      --split_type ${split}
+done
 
-# Process training data
-echo "Preprocessing train data from ${DATA_DIR}/train.csv..."
-python 01_preprocess_data_paper_based.py \
-  --data_file ${DATA_DIR}/train.csv \
-  --mi_file ${MI_FILE} \
-  --output_dir ${OUTPUT_BASE_DIR}/train \
-  --mi_threshold ${MI_THRESHOLD} \
-  --use_advanced_feature_selection True \
-  --top_features ${TOP_FEATURES} \
-  --use_clustering True \
-  --num_clusters ${NUM_CLUSTERS} \
-  --split_type train
-
-# Process validation data
-echo "Preprocessing val data from ${DATA_DIR}/val.csv..."
-python 01_preprocess_data_paper_based.py \
-  --data_file ${DATA_DIR}/val.csv \
-  --mi_file ${MI_FILE} \
-  --output_dir ${OUTPUT_BASE_DIR}/val \
-  --mi_threshold ${MI_THRESHOLD} \
-  --use_advanced_feature_selection True \
-  --top_features ${TOP_FEATURES} \
-  --use_clustering True \
-  --num_clusters ${NUM_CLUSTERS} \
-  --split_type val
-
-# Process test data
-echo "Preprocessing test data from ${DATA_DIR}/test.csv..."
-python 01_preprocess_data_paper_based.py \
-  --data_file ${DATA_DIR}/test.csv \
-  --mi_file ${MI_FILE} \
-  --output_dir ${OUTPUT_BASE_DIR}/test \
-  --mi_threshold ${MI_THRESHOLD} \
-  --use_advanced_feature_selection True \
-  --top_features ${TOP_FEATURES} \
-  --use_clustering True \
-  --num_clusters ${NUM_CLUSTERS} \
-  --split_type test
-
-echo "Preprocessing completed. Results saved to ${OUTPUT_BASE_DIR}/"
+echo "Hybrid preprocessing completed at $(date)"

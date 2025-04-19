@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=preprocess_clustering
 #SBATCH --account=bdau-delta-gpu
-#SBATCH --partition=gpuA100x4-interactive            
+#SBATCH --partition=gpuA100x4-interactive
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --gres=gpu:1                   
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=16G
 #SBATCH --time=01:00:00
@@ -13,61 +13,40 @@
 
 # Load modules
 # module load anaconda3
-# module load cuda  # Optional if needed for envs with torch+GPU
+# module load cuda  # Uncomment if CUDA-dependent libs are used
 
 # Activate environment
 source activate gnn-env
 
-# Create logs directory if it doesn't exist
+# Create logs directory
 mkdir -p logs
 
-# Create output directories
-mkdir -p data/preprocessed/clustering/train
-mkdir -p data/preprocessed/clustering/val
-mkdir -p data/preprocessed/clustering/test
-
-# Set variables
-TRAIN_DATA="data/split_data/sample_total/train.csv"
-VAL_DATA="data/split_data/sample_total/val.csv"
-TEST_DATA="data/split_data/sample_total/test.csv"
-MI_FILE="data/mutual_information2.csv"
-OUTPUT_DIR_TRAIN="data/preprocessed/clustering/train"
-OUTPUT_DIR_VAL="data/preprocessed/clustering/val"
-OUTPUT_DIR_TEST="data/preprocessed/clustering/test"
+# Parameters
 MI_THRESHOLD=0.3259
 NUM_CLUSTERS=4
+CONFIG_TAG="mi${MI_THRESHOLD}_k${NUM_CLUSTERS}"
 
-# Run preprocessing with clustering for train data
-echo "Preprocessing train data with clustering..."
-python scripts/01_preprocess_data.py \
-  --data_file ${TRAIN_DATA} \
-  --mi_file ${MI_FILE} \
-  --output_dir ${OUTPUT_DIR_TRAIN} \
-  --mi_threshold ${MI_THRESHOLD} \
-  --use_clustering True \
-  --num_clusters ${NUM_CLUSTERS} \
-  --split_type train
+# Paths
+BASE_DATA_DIR="data/split_data/sample_total"
+MI_FILE="data/mutual_information2.csv"
+OUTPUT_BASE_DIR="data/preprocessed/clustering/${CONFIG_TAG}"
 
-# Run preprocessing with clustering for validation data
-echo "Preprocessing validation data with clustering..."
-python scripts/01_preprocess_data.py \
-  --data_file ${VAL_DATA} \
-  --mi_file ${MI_FILE} \
-  --output_dir ${OUTPUT_DIR_VAL} \
-  --mi_threshold ${MI_THRESHOLD} \
-  --use_clustering True \
-  --num_clusters ${NUM_CLUSTERS} \
-  --split_type val
+# Create output directories
+for split in train val test; do
+    mkdir -p ${OUTPUT_BASE_DIR}/${split}
+done
 
-# Run preprocessing with clustering for test data
-echo "Preprocessing test data with clustering..."
-python scripts/01_preprocess_data.py \
-  --data_file ${TEST_DATA} \
-  --mi_file ${MI_FILE} \
-  --output_dir ${OUTPUT_DIR_TEST} \
-  --mi_threshold ${MI_THRESHOLD} \
-  --use_clustering True \
-  --num_clusters ${NUM_CLUSTERS} \
-  --split_type test
+# Run preprocessing with clustering
+for split in train val test; do
+    echo "Preprocessing ${split} data with clustering..."
+    python scripts/01_preprocess_data.py \
+      --data_file ${BASE_DATA_DIR}/${split}.csv \
+      --mi_file ${MI_FILE} \
+      --output_dir ${OUTPUT_BASE_DIR}/${split} \
+      --mi_threshold ${MI_THRESHOLD} \
+      --use_clustering True \
+      --num_clusters ${NUM_CLUSTERS} \
+      --split_type ${split}
+done
 
 echo "Clustering-based preprocessing completed at $(date)"
