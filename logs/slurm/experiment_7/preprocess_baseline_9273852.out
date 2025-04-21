@@ -1,0 +1,22 @@
+Preprocessing train data for baseline (mi_threshold=0.2)...
+
+Preprocessing Statistics:
+dataset_size: 4653053
+num_nodes: 44
+num_edges: 448
+train_size: 4653053
+Preprocessing val data for baseline (mi_threshold=0.2)...
+
+Preprocessing Statistics:
+dataset_size: 997082
+num_nodes: 44
+num_edges: 448
+val_size: 997082
+Preprocessing test data for baseline (mi_threshold=0.2)...
+
+Preprocessing Statistics:
+dataset_size: 997084
+num_nodes: 44
+num_edges: 448
+test_size: 997084
+Baseline preprocessing completed at Mon Apr 21 17:30:52 CDT 2025

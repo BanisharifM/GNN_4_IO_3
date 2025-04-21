@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH --job-name=preprocess_clustering
 #SBATCH --account=bdau-delta-gpu
-#SBATCH --partition=gpuA100x4-interactive
+#SBATCH --partition=gpuA100x4
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
-#SBATCH --time=01:00:00
+#SBATCH --cpus-per-task=64
+#SBATCH --mem=128G
+#SBATCH --time=24:00:00
 #SBATCH --output=logs/slurm/experiment_6/preprocess_clustering_%j.out
 #SBATCH --error=logs/slurm/experiment_6/preprocess_clustering_%j.err
 

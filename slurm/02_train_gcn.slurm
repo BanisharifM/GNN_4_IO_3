@@ -7,9 +7,9 @@
 #SBATCH --cpus-per-task=64
 #SBATCH --gres=gpu:1
 #SBATCH --mem=128G
-#SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/experiment_4/train_%j.out
-#SBATCH --error=logs/slurm/experiment_4/train_%j.err
+#SBATCH --time=12:00:00
+#SBATCH --output=logs/slurm/experiment_7/train_%j.out
+#SBATCH --error=logs/slurm/experiment_7/train_%j.err
 
 # Load required modules
 # module load anaconda3
@@ -22,10 +22,10 @@ source activate gnn_env
 mkdir -p logs
 
 # Set variables for split-based workflow
-TRAIN_DIR="data/preprocessed/baseline_gcn/experiment_3/train"
-VAL_DIR="data/preprocessed/baseline_gcn/experiment_3/val"
-TEST_DIR="data/preprocessed/baseline_gcn/experiment_3/test"
-OUTPUT_DIR="logs/training/baseline_gcn/experiment_4"
+TRAIN_DIR="data/preprocessed/baseline/mi0.2/train"
+VAL_DIR="data/preprocessed/baseline/mi0.2/val"
+TEST_DIR="data/preprocessed/baseline/mi0.2/test"
+OUTPUT_DIR="logs/training/baseline_gcn/experiment_7"
 
 # Run training script with single checkpoint
 echo "Starting model training at $(date)"
