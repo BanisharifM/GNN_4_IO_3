@@ -347,8 +347,8 @@ def optimize_hyperparameters(
         f.write(f"  --dropout {best_config['dropout']} \\\n")
         f.write(f"  --epochs 100 \\\n")
         f.write(f"  --early_stopping_patience 10 \\\n")
-        f.write(f"  --use_split_dirs True \\\n")
-        f.write(f"  --resume_training True\n")
+        f.write(f"  --use_split_dirs \\\n")
+        # f.write(f"  --resume_training True\n")
     
     # Make script executable
     os.chmod(best_params_script, 0o755)

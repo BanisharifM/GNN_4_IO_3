@@ -8,8 +8,8 @@
 #SBATCH --gres=gpu:1
 #SBATCH --mem=128G
 #SBATCH --time=12:00:00
-#SBATCH --output=logs/slurm/experiment_7/train_%j.out
-#SBATCH --error=logs/slurm/experiment_7/train_%j.err
+#SBATCH --output=logs/slurm/experiment_8/train_%j.out
+#SBATCH --error=logs/slurm/experiment_8/train_%j.err
 
 # Load required modules
 # module load anaconda3
@@ -25,7 +25,7 @@ mkdir -p logs
 TRAIN_DIR="data/preprocessed/baseline/mi0.2/train"
 VAL_DIR="data/preprocessed/baseline/mi0.2/val"
 TEST_DIR="data/preprocessed/baseline/mi0.2/test"
-OUTPUT_DIR="logs/training/baseline_gcn/experiment_7"
+OUTPUT_DIR="logs/training/baseline_gat/experiment_8"
 
 # Run training script with single checkpoint
 echo "Starting model training at $(date)"
@@ -34,7 +34,7 @@ python scripts/02_train_model.py \
   --val_dir ${VAL_DIR} \
   --test_dir ${TEST_DIR} \
   --output_dir ${OUTPUT_DIR} \
-  --model_type gcn \
+  --model_type gat \
   --hidden_dim 256 \
   --num_layers 2 \
   --learning_rate 0.0017331607338165434 \
@@ -48,3 +48,5 @@ python scripts/02_train_model.py \
 
 
 echo "Training completed at $(date)"
+
+

@@ -7,9 +7,9 @@
 #SBATCH --cpus-per-task=64
 #SBATCH --gres=gpu:1
 #SBATCH --mem=128G
-#SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/experiment_5/train_%j.out
-#SBATCH --error=logs/slurm/experiment_5/train_%j.err
+#SBATCH --time=12:00:00
+#SBATCH --output=logs/slurm/experiment_8/train_%j.out
+#SBATCH --error=logs/slurm/experiment_8/train_%j.err
 
 # Load required modules
 # module load anaconda3
@@ -22,10 +22,10 @@ source activate gnn_env
 mkdir -p logs
 
 # Set variables for split-based workflow
-TRAIN_DIR="data/preprocessed/baseline_gcn/experiment_3/train"
-VAL_DIR="data/preprocessed/baseline_gcn/experiment_3/val"
-TEST_DIR="data/preprocessed/baseline_gcn/experiment_3/test"
-OUTPUT_DIR="logs/training/baseline_gat/experiment_5"
+TRAIN_DIR="data/preprocessed/baseline/mi0.2/train"
+VAL_DIR="data/preprocessed/baseline/mi0.2/val"
+TEST_DIR="data/preprocessed/baseline/mi0.2/test"
+OUTPUT_DIR="logs/training/baseline_gat/experiment_8"
 
 # Run training script with single checkpoint
 echo "Starting model training at $(date)"
@@ -39,11 +39,12 @@ python scripts/02_train_model.py \
   --num_layers 2 \
   --learning_rate 0.0017331607338165434 \
   --batch_size 64 \
-  --epochs 10 \
+  --epochs 20 \
   --dropout 0.23487409763750228 \
   --early_stopping_patience 10 \
   --device cuda \
-  --use_split_dirs True \
-  --resume_training True
+  --use_split_dirs
+  # --no_resume If want to disable resume (start fresh)
+
 
 echo "Training completed at $(date)"

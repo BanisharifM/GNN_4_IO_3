@@ -1,0 +1,20 @@
+2025-04-21 17:51:04,553 - INFO - Using device: cuda
+2025-04-21 17:51:04,553 - INFO - Using split-based workflow with directories: data/preprocessed/baseline/mi0.2/train, data/preprocessed/baseline/mi0.2/val, data/preprocessed/baseline/mi0.2/test
+2025-04-21 17:51:05,503 - INFO - Creating datasets from split directories...
+2025-04-21 17:54:39,043 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-21 17:54:39,043 - INFO - Creating GCN model with 2 layers and 256 hidden dimensions
+2025-04-21 17:54:39,144 - INFO - Initialized GCN model with 2 layers and 256 hidden dimensions
+2025-04-21 17:54:39,145 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-21 17:54:39,623 - INFO - No checkpoint found or resume disabled. Starting training from scratch.
+2025-04-21 17:54:39,624 - INFO - Starting training for 20 epochs (from epoch 1)
+2025-04-21 18:04:02,560 - INFO - Epoch 1/20, Train Loss: 310039589.8814, Val Loss: 0.9490
+2025-04-21 18:04:02,584 - INFO - New best model saved at epoch 1 with validation loss: 0.949009
+2025-04-21 18:13:36,935 - INFO - Epoch 2/20, Train Loss: 0.9496, Val Loss: 0.9490
+2025-04-21 18:13:36,950 - INFO - No improvement for 1 epochs. Best validation loss: 0.949009 at epoch 1
+2025-04-21 18:23:14,536 - INFO - Epoch 3/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-21 18:23:14,562 - INFO - New best model saved at epoch 3 with validation loss: 0.948919
+2025-04-21 18:32:33,414 - INFO - Epoch 4/20, Train Loss: 0.9495, Val Loss: 0.9492
+2025-04-21 18:32:33,428 - INFO - No improvement for 1 epochs. Best validation loss: 0.948919 at epoch 3
+2025-04-21 18:41:53,651 - INFO - Epoch 5/20, Train Loss: 0.9496, Val Loss: 0.9490
+2025-04-21 18:41:53,666 - INFO - No improvement for 2 epochs. Best validation loss: 0.948919 at epoch 3
+slurmstepd: error: *** JOB 9274167 ON gpua023 CANCELLED AT 2025-04-21T18:51:06 DUE TO TIME LIMIT ***
