@@ -16,3 +16,4 @@
 2025-04-21 05:43:21 - INFO - Performing Sequential Backward Selection starting with 44 features
 /u/mbanisharifdehkordi/gnn-env/lib/python3.12/site-packages/sklearn/cluster/_kmeans.py:1416: FutureWarning: The default value of `n_init` will change from 10 to 'auto' in 1.4. Set the value of `n_init` explicitly to suppress the warning
   super()._check_params_vs_input(X, default_n_init=10)
+slurmstepd: error: *** JOB 9268932 ON gpua068 CANCELLED AT 2025-04-22T05:42:36 DUE TO TIME LIMIT ***

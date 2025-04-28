@@ -1,0 +1,17 @@
+2025-04-23 03:57:19,760 - INFO - Starting hyperparameter optimization with 1 configurations
+2025-04-23 03:57:23,567	INFO worker.py:1852 -- Started a local Ray instance.
+[I 2025-04-23 03:57:24,456] A new study created in memory with name: optuna
+2025-04-23 03:57:24,476	WARNING tune.py:902 -- AIR_VERBOSITY is set, ignoring passed-in ProgressReporter for now.
+[36m(func pid=2423535)[0m 2025-04-23 04:00:10,554 - INFO - Initialized GCN model with 3 layers and 32 hidden dimensions
+[36m(func pid=2423535)[0m 2025-04-23 04:00:10,554 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-23 05:45:16,850	INFO tune.py:1009 -- Wrote the latest version of all result files and experiment state to '/u/mbanisharifdehkordi/Github/GNN_4_IO_3/logs/hyperopt/baseline/mi0.2/experiment_9/gnn_hyperopt' in 0.0583s.
+2025-04-23 05:45:16,861 - INFO - Optimization completed in 6472.43 seconds
+2025-04-23 05:45:16,861 - INFO - Best validation loss: 0.9490
+2025-04-23 05:45:16,861 - INFO - Best validation RMSE: 0.9741427898406982
+2025-04-23 05:45:16,861 - INFO - Best validation MAE: 0.8139393329620361
+2025-04-23 05:45:16,861 - INFO - Best validation R²: -5.323588871397611e-05
+2025-04-23 05:45:16,861 - INFO - Best hyperparameters: {'learning_rate': 0.00638204909515573, 'batch_size': 128, 'hidden_dim': 32, 'num_layers': 3, 'dropout': 0.2601364522768404, 'model_type': 'gcn'}
+2025-04-23 05:45:16,866 - INFO - Results saved to /u/mbanisharifdehkordi/Github/GNN_4_IO_3/logs/hyperopt/baseline/mi0.2/experiment_9
+2025-04-23 05:45:16,866 - INFO - Script to train with best hyperparameters: /u/mbanisharifdehkordi/Github/GNN_4_IO_3/logs/hyperopt/baseline/mi0.2/experiment_9/train_best_model.sh
+2025-04-23 05:45:16,866 - INFO - TensorBoard logs available at: /u/mbanisharifdehkordi/Github/GNN_4_IO_3/logs/hyperopt/baseline/mi0.2/experiment_9/tensorboard
+2025-04-23 05:45:16,866 - INFO - View TensorBoard with: tensorboard --logdir=/u/mbanisharifdehkordi/Github/GNN_4_IO_3/logs/hyperopt/baseline/mi0.2/experiment_9/tensorboard

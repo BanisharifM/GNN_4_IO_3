@@ -1,0 +1,28 @@
+Preprocessing train data with advanced feature selection...
+
+Preprocessing Statistics:
+dataset_size: 4653053
+num_nodes: 15
+num_edges: 210
+train_size: 4653053
+feature_selection: min_max_mutual_information
+num_selected_features: 15
+Preprocessing val data with advanced feature selection...
+
+Preprocessing Statistics:
+dataset_size: 997082
+num_nodes: 15
+num_edges: 210
+val_size: 997082
+feature_selection: min_max_mutual_information
+num_selected_features: 15
+Preprocessing test data with advanced feature selection...
+
+Preprocessing Statistics:
+dataset_size: 997084
+num_nodes: 15
+num_edges: 210
+test_size: 997084
+feature_selection: min_max_mutual_information
+num_selected_features: 15
+Advanced feature selection preprocessing completed at Mon Apr 21 23:06:00 CDT 2025

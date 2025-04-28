@@ -1,15 +1,15 @@
 #!/bin/bash
 #SBATCH --job-name=gnn_hyperopt
 #SBATCH --account=bdau-delta-gpu
-#SBATCH --partition=gpuA100x4-interactive
+#SBATCH --partition=gpuA100x4
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --gres=gpu:2
+#SBATCH --gres=gpu:4
 #SBATCH --mem=128G
-#SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/experiment_9/hyperopt_%j.out
-#SBATCH --error=logs/slurm/experiment_9/hyperopt_%j.err
+#SBATCH --time=48:00:00
+#SBATCH --output=logs/slurm/experiment_11/hyperopt_%j.out
+#SBATCH --error=logs/slurm/experiment_11/hyperopt_%j.err
 
 # Load required modules
 module load cuda
@@ -18,13 +18,13 @@ module load cuda
 source activate gnn_env
 
 # Create logs directory if it doesn't exist
-mkdir -p logs/slurm/experiment_9
+mkdir -p logs/slurm/experiment_11
 
 # Set variables for split-based workflow
-TRAIN_DIR="data/preprocessed/baseline/mi0.2/train"
-VAL_DIR="data/preprocessed/baseline/mi0.2/val"
-TEST_DIR="data/preprocessed/baseline/mi0.2/test"
-OUTPUT_DIR="logs/hyperopt/baseline/mi0.2/experiment_9"
+TRAIN_DIR="data/preprocessed/baseline/mi0.1/train"
+VAL_DIR="data/preprocessed/baseline/mi0.1/val"
+TEST_DIR="data/preprocessed/baseline/mi0.1/test"
+OUTPUT_DIR="logs/hyperopt/baseline/mi0.1/experiment_11"
 
 # Create output directory
 mkdir -p ${OUTPUT_DIR}
@@ -36,9 +36,9 @@ python scripts/04_hyperparameter_optimization.py \
   --val_dir ${VAL_DIR} \
   --test_dir ${TEST_DIR} \
   --output_dir ${OUTPUT_DIR} \
-  --num_samples 1 \
-  --max_epochs 2 \
-  --early_stopping_patience 1 \
+  --num_samples 60 \
+  --max_epochs 15 \
+  --early_stopping_patience 5 \
   --cpus_per_trial 4 \
   --gpus_per_trial 0.5 \
   --num_workers 4

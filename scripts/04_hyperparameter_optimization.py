@@ -31,6 +31,16 @@ sys.path.append(str(project_root))
 
 from src.models.gnn import GNNRegressor
 
+# Helper to convert numpy types to JSON-serializable Python types
+def convert_numpy(obj):
+    if isinstance(obj, (np.integer, np.int32, np.int64)):
+        return int(obj)
+    elif isinstance(obj, (np.floating, np.float32, np.float64)):
+        return float(obj)
+    elif isinstance(obj, (np.ndarray,)):
+        return obj.tolist()
+    return obj
+
 def train_with_params(
     config,
     train_dir=None,
@@ -327,9 +337,11 @@ def optimize_hyperparameters(
     }
     
     # Save as JSON
+    # with open(os.path.join(output_dir, 'hyperopt_results.json'), 'w') as f:
+    #     json.dump(results, f, indent=4)
     with open(os.path.join(output_dir, 'hyperopt_results.json'), 'w') as f:
-        json.dump(results, f, indent=4)
-    
+        json.dump(results, f, indent=4, default=convert_numpy)
+
     # Create a script to train with best hyperparameters
     best_params_script = os.path.join(output_dir, 'train_best_model.sh')
     with open(best_params_script, 'w') as f:

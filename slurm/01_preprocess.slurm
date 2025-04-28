@@ -1,15 +1,15 @@
 #!/bin/bash
 #SBATCH --job-name=preprocess_baseline
 #SBATCH --account=bdau-delta-gpu
-#SBATCH --partition=gpuA100x4
+#SBATCH --partition=gpuA100x4-interactive
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=16
-#SBATCH --mem=64G
-#SBATCH --time=04:00:00
-#SBATCH --output=logs/slurm/experiment_7/preprocess_baseline_%j.out
-#SBATCH --error=logs/slurm/experiment_7/preprocess_baseline_%j.err
+#SBATCH --cpus-per-task=64
+#SBATCH --mem=128G
+#SBATCH --time=01:00:00
+#SBATCH --output=logs/slurm/experiment_11/preprocess_baseline_%j.out
+#SBATCH --error=logs/slurm/experiment_11/preprocess_baseline_%j.err
 
 # Activate your environment
 source activate gnn-env
@@ -18,7 +18,7 @@ source activate gnn-env
 mkdir -p logs
 
 # Configurable parameters
-MI_THRESHOLD=0.2
+MI_THRESHOLD=0.1
 CONFIG_TAG="mi${MI_THRESHOLD}"  
 
 # Paths

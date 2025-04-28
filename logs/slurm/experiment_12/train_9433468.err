@@ -1,0 +1,37 @@
+2025-04-27 15:33:44,875 - INFO - Using device: cuda
+2025-04-27 15:33:44,875 - INFO - Using split-based workflow with directories: data/preprocessed/baseline/mi0.2/train, data/preprocessed/baseline/mi0.2/val, data/preprocessed/baseline/mi0.2/test
+2025-04-27 15:33:46,987 - INFO - Creating datasets from split directories...
+2025-04-27 15:37:23,642 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-27 15:37:23,643 - INFO - Creating GAT model with 3 layers and 128 hidden dimensions
+2025-04-27 15:37:23,786 - INFO - Initialized GAT model with 3 layers and 128 hidden dimensions
+2025-04-27 15:37:23,786 - INFO - Initialized GNN regressor with GAT backbone
+2025-04-27 15:37:24,236 - INFO - Found checkpoint at logs/training/baseline_gat/experiment_12/latest_checkpoint.pt. Resuming training...
+2025-04-27 15:37:24,254 - INFO - Resuming from epoch 38 with best validation loss 0.202611 at epoch 24
+2025-04-27 15:37:24,254 - INFO - Starting training for 39 epochs (from epoch 39)
+2025-04-27 16:16:13,650 - INFO - Epoch 39/39, Train Loss: 0.5841, Val Loss: 0.2153
+2025-04-27 16:16:13,664 - INFO - No improvement for 1 epochs. Best validation loss: 0.202611 at epoch 24
+2025-04-27 16:16:13,664 - INFO - Training completed in 2329.41 seconds
+2025-04-27 16:16:13,665 - INFO - Loading best model from epoch 24 for evaluation
+2025-04-27 16:20:28,021 - INFO - Test Loss: 0.202449
+2025-04-27 16:20:28,226 - INFO - Test MSE: 0.202449
+2025-04-27 16:20:28,226 - INFO - Test RMSE: 0.449943
+2025-04-27 16:20:28,226 - INFO - Test MAE: 0.333899
+Traceback (most recent call last):
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/02_train_model.py", line 938, in <module>
+    main()
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/02_train_model.py", line 915, in main
+    train_model(
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/02_train_model.py", line 489, in train_model
+    json.dump(metrics, f, indent=2)
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable

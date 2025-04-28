@@ -1,0 +1,19 @@
+{
+    "best_config": {
+        "learning_rate": 0.0001020917457159363,
+        "batch_size": 16,
+        "hidden_dim": 128,
+        "num_layers": 3,
+        "dropout": 0.31173467316200465,
+        "model_type": "gat"
+    },
+    "best_metrics": {
+        "loss": 0.23899020070050037,
+        "rmse": 0.4888662099838257,
+        "mae": 0.3642336130142212,
+        "r2": 0.7481407715735418
+    },
+    "optimization_time": 129289.52910327911,
+    "num_samples": 40,
+    "max_epochs": 10
+}

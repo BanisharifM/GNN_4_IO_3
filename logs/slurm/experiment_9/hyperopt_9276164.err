@@ -1,0 +1,33 @@
+2025-04-21 22:47:49,942 - INFO - Starting hyperparameter optimization with 1 configurations
+2025-04-21 22:47:53,404	INFO worker.py:1852 -- Started a local Ray instance.
+[I 2025-04-21 22:47:54,306] A new study created in memory with name: optuna
+2025-04-21 22:47:54,324	WARNING tune.py:902 -- AIR_VERBOSITY is set, ignoring passed-in ProgressReporter for now.
+[36m(func pid=3465971)[0m 2025-04-21 22:50:41,788 - INFO - Initialized GAT model with 3 layers and 256 hidden dimensions
+[36m(func pid=3465971)[0m 2025-04-21 22:50:41,788 - INFO - Initialized GNN regressor with GAT backbone
+2025-04-21 23:37:02,536	INFO tune.py:1009 -- Wrote the latest version of all result files and experiment state to '/u/mbanisharifdehkordi/Github/GNN_4_IO_3/logs/hyperopt/baseline/mi0.2/experiment_9/gnn_hyperopt' in 0.0238s.
+2025-04-21 23:37:02,547 - INFO - Optimization completed in 2948.27 seconds
+2025-04-21 23:37:02,547 - INFO - Best validation loss: 180246736330.0952
+2025-04-21 23:37:02,547 - INFO - Best validation RMSE: 424554.75
+2025-04-21 23:37:02,547 - INFO - Best validation MAE: 5531.458984375
+2025-04-21 23:37:02,547 - INFO - Best validation R²: -189952578960.15137
+2025-04-21 23:37:02,547 - INFO - Best hyperparameters: {'learning_rate': 0.0009764757359774002, 'batch_size': 128, 'hidden_dim': 256, 'num_layers': 3, 'dropout': 0.20591111311538035, 'model_type': 'gat'}
+Traceback (most recent call last):
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/04_hyperparameter_optimization.py", line 378, in <module>
+    results = optimize_hyperparameters(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/04_hyperparameter_optimization.py", line 331, in optimize_hyperparameters
+    json.dump(results, f, indent=4)
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable

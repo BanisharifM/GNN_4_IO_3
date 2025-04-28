@@ -844,6 +844,9 @@ def train_per_cluster_models(
             **test_metrics
         }
         
+        # Convert all numpy types to native Python types
+        metrics = {k: float(v) if isinstance(v, np.floating) else v for k, v in metrics.items()}
+ 
         with open(os.path.join(cluster_output_dir, 'metrics.json'), 'w') as f:
             json.dump(metrics, f, indent=2)
         

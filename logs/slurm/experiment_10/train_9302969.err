@@ -1,0 +1,52 @@
+2025-04-23 08:11:21,806 - INFO - Using device: cuda
+2025-04-23 08:11:21,806 - INFO - Using split-based workflow with directories: data/preprocessed/adv_feat/mi0_top15/train, data/preprocessed/adv_feat/mi0_top15/val, data/preprocessed/adv_feat/mi0_top15/test
+2025-04-23 08:11:22,578 - INFO - Creating datasets from split directories...
+2025-04-23 08:15:00,927 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-23 08:15:00,927 - INFO - Creating GCN model with 2 layers and 256 hidden dimensions
+2025-04-23 08:15:01,027 - INFO - Initialized GCN model with 2 layers and 256 hidden dimensions
+2025-04-23 08:15:01,028 - INFO - Initialized GNN regressor with GCN backbone
+2025-04-23 08:15:01,523 - INFO - No checkpoint found or resume disabled. Starting training from scratch.
+2025-04-23 08:15:01,523 - INFO - Starting training for 20 epochs (from epoch 1)
+2025-04-23 08:24:06,502 - INFO - Epoch 1/20, Train Loss: 0.5409, Val Loss: 0.4833
+2025-04-23 08:24:06,526 - INFO - New best model saved at epoch 1 with validation loss: 0.483276
+2025-04-23 08:33:04,741 - INFO - Epoch 2/20, Train Loss: 0.4928, Val Loss: 0.4330
+2025-04-23 08:33:04,766 - INFO - New best model saved at epoch 2 with validation loss: 0.432991
+2025-04-23 08:42:00,784 - INFO - Epoch 3/20, Train Loss: 0.4818, Val Loss: 0.4318
+2025-04-23 08:42:00,807 - INFO - New best model saved at epoch 3 with validation loss: 0.431807
+2025-04-23 08:50:54,768 - INFO - Epoch 4/20, Train Loss: 0.4755, Val Loss: 0.4358
+2025-04-23 08:50:54,782 - INFO - No improvement for 1 epochs. Best validation loss: 0.431807 at epoch 3
+2025-04-23 08:59:51,980 - INFO - Epoch 5/20, Train Loss: 0.4722, Val Loss: 0.4257
+2025-04-23 08:59:52,004 - INFO - New best model saved at epoch 5 with validation loss: 0.425731
+2025-04-23 09:08:45,943 - INFO - Epoch 6/20, Train Loss: 0.4705, Val Loss: 0.4108
+2025-04-23 09:08:45,966 - INFO - New best model saved at epoch 6 with validation loss: 0.410772
+2025-04-23 09:17:39,755 - INFO - Epoch 7/20, Train Loss: 0.4689, Val Loss: 0.4296
+2025-04-23 09:17:39,770 - INFO - No improvement for 1 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 09:26:28,454 - INFO - Epoch 8/20, Train Loss: 0.4673, Val Loss: 0.4143
+2025-04-23 09:26:28,468 - INFO - No improvement for 2 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 09:35:16,745 - INFO - Epoch 9/20, Train Loss: 0.4667, Val Loss: 0.4185
+2025-04-23 09:35:16,761 - INFO - No improvement for 3 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 09:44:04,645 - INFO - Epoch 10/20, Train Loss: 0.4657, Val Loss: 0.4210
+2025-04-23 09:44:04,660 - INFO - No improvement for 4 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 09:52:53,286 - INFO - Epoch 11/20, Train Loss: 0.4646, Val Loss: 0.4192
+2025-04-23 09:52:53,301 - INFO - No improvement for 5 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 10:01:39,371 - INFO - Epoch 12/20, Train Loss: 0.4639, Val Loss: 0.4114
+2025-04-23 10:01:39,387 - INFO - No improvement for 6 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 10:10:27,446 - INFO - Epoch 13/20, Train Loss: 0.4639, Val Loss: 0.4293
+2025-04-23 10:10:27,460 - INFO - No improvement for 7 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 10:19:10,719 - INFO - Epoch 14/20, Train Loss: 0.4632, Val Loss: 0.4263
+2025-04-23 10:19:10,733 - INFO - No improvement for 8 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 10:27:52,048 - INFO - Epoch 15/20, Train Loss: 0.4628, Val Loss: 0.4139
+2025-04-23 10:27:52,063 - INFO - No improvement for 9 epochs. Best validation loss: 0.410772 at epoch 6
+2025-04-23 10:36:30,758 - INFO - Epoch 16/20, Train Loss: 0.4623, Val Loss: 0.4048
+2025-04-23 10:36:30,782 - INFO - New best model saved at epoch 16 with validation loss: 0.404804
+2025-04-23 10:45:07,138 - INFO - Epoch 17/20, Train Loss: 0.4615, Val Loss: 0.4142
+2025-04-23 10:45:07,154 - INFO - No improvement for 1 epochs. Best validation loss: 0.404804 at epoch 16
+2025-04-23 10:53:42,370 - INFO - Epoch 18/20, Train Loss: 0.4611, Val Loss: 0.4164
+2025-04-23 10:53:42,385 - INFO - No improvement for 2 epochs. Best validation loss: 0.404804 at epoch 16
+2025-04-23 11:02:17,448 - INFO - Epoch 19/20, Train Loss: 0.4608, Val Loss: 0.4106
+2025-04-23 11:02:17,462 - INFO - No improvement for 3 epochs. Best validation loss: 0.404804 at epoch 16
+2025-04-23 11:10:52,172 - INFO - Epoch 20/20, Train Loss: 0.4608, Val Loss: 0.4332
+2025-04-23 11:10:52,186 - INFO - No improvement for 4 epochs. Best validation loss: 0.404804 at epoch 16
+2025-04-23 11:10:52,186 - INFO - Training completed in 10550.66 seconds
+2025-04-23 11:10:52,186 - INFO - Loading best model from epoch 16 for evaluation
+slurmstepd: error: *** JOB 9302969 ON gpua087 CANCELLED AT 2025-04-23T11:11:23 DUE TO TIME LIMIT ***

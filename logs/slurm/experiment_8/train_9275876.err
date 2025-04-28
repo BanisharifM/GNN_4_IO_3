@@ -1,0 +1,74 @@
+2025-04-23 03:57:15,980 - INFO - Using device: cuda
+2025-04-23 03:57:15,981 - INFO - Using split-based workflow with directories: data/preprocessed/baseline/mi0.2/train, data/preprocessed/baseline/mi0.2/val, data/preprocessed/baseline/mi0.2/test
+2025-04-23 03:57:17,402 - INFO - Creating datasets from split directories...
+2025-04-23 04:00:53,294 - INFO - Train/Val/Test sizes: 4653053/997082/997084
+2025-04-23 04:00:53,294 - INFO - Creating GAT model with 2 layers and 256 hidden dimensions
+2025-04-23 04:00:53,428 - INFO - Initialized GAT model with 2 layers and 256 hidden dimensions
+2025-04-23 04:00:53,429 - INFO - Initialized GNN regressor with GAT backbone
+2025-04-23 04:00:53,890 - INFO - No checkpoint found or resume disabled. Starting training from scratch.
+2025-04-23 04:00:53,890 - INFO - Starting training for 20 epochs (from epoch 1)
+2025-04-23 04:10:51,584 - INFO - Epoch 1/20, Train Loss: 581089126241.3447, Val Loss: 21732956213.9947
+2025-04-23 04:10:51,609 - INFO - New best model saved at epoch 1 with validation loss: 21732956213.994720
+2025-04-23 04:20:54,612 - INFO - Epoch 2/20, Train Loss: 1146156993406.2598, Val Loss: 191823582994.0610
+2025-04-23 04:20:54,627 - INFO - No improvement for 1 epochs. Best validation loss: 21732956213.994720 at epoch 1
+2025-04-23 04:30:56,426 - INFO - Epoch 3/20, Train Loss: 1693387861435.5308, Val Loss: 134780.5511
+2025-04-23 04:30:56,451 - INFO - New best model saved at epoch 3 with validation loss: 134780.551090
+2025-04-23 04:40:55,871 - INFO - Epoch 4/20, Train Loss: 299.7014, Val Loss: 0.9490
+2025-04-23 04:40:55,896 - INFO - New best model saved at epoch 4 with validation loss: 0.948988
+2025-04-23 04:50:53,520 - INFO - Epoch 5/20, Train Loss: 0.9496, Val Loss: 0.9492
+2025-04-23 04:50:53,534 - INFO - No improvement for 1 epochs. Best validation loss: 0.948988 at epoch 4
+2025-04-23 05:00:49,783 - INFO - Epoch 6/20, Train Loss: 82.1941, Val Loss: 1.0201
+2025-04-23 05:00:49,799 - INFO - No improvement for 2 epochs. Best validation loss: 0.948988 at epoch 4
+2025-04-23 05:10:44,554 - INFO - Epoch 7/20, Train Loss: 0.9496, Val Loss: 0.9490
+2025-04-23 05:10:44,580 - INFO - New best model saved at epoch 7 with validation loss: 0.948966
+2025-04-23 05:20:36,928 - INFO - Epoch 8/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-23 05:20:36,953 - INFO - New best model saved at epoch 8 with validation loss: 0.948943
+2025-04-23 05:30:26,923 - INFO - Epoch 9/20, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-23 05:30:26,948 - INFO - New best model saved at epoch 9 with validation loss: 0.948940
+2025-04-23 05:40:26,423 - INFO - Epoch 10/20, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-23 05:40:26,448 - INFO - New best model saved at epoch 10 with validation loss: 0.948915
+2025-04-23 05:50:13,739 - INFO - Epoch 11/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-23 05:50:13,755 - INFO - No improvement for 1 epochs. Best validation loss: 0.948915 at epoch 10
+2025-04-23 06:00:00,406 - INFO - Epoch 12/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-23 06:00:00,423 - INFO - No improvement for 2 epochs. Best validation loss: 0.948915 at epoch 10
+2025-04-23 06:09:46,127 - INFO - Epoch 13/20, Train Loss: 0.9496, Val Loss: 0.9490
+2025-04-23 06:09:46,144 - INFO - No improvement for 3 epochs. Best validation loss: 0.948915 at epoch 10
+2025-04-23 06:19:30,589 - INFO - Epoch 14/20, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-23 06:19:30,604 - INFO - No improvement for 4 epochs. Best validation loss: 0.948915 at epoch 10
+2025-04-23 06:29:15,844 - INFO - Epoch 15/20, Train Loss: 0.9496, Val Loss: 0.9494
+2025-04-23 06:29:15,859 - INFO - No improvement for 5 epochs. Best validation loss: 0.948915 at epoch 10
+2025-04-23 06:39:06,925 - INFO - Epoch 16/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-23 06:39:06,953 - INFO - New best model saved at epoch 16 with validation loss: 0.948904
+2025-04-23 06:48:53,320 - INFO - Epoch 17/20, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-23 06:48:53,335 - INFO - No improvement for 1 epochs. Best validation loss: 0.948904 at epoch 16
+2025-04-23 06:58:40,015 - INFO - Epoch 18/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-23 06:58:40,031 - INFO - No improvement for 2 epochs. Best validation loss: 0.948904 at epoch 16
+2025-04-23 07:08:25,346 - INFO - Epoch 19/20, Train Loss: 0.9495, Val Loss: 0.9489
+2025-04-23 07:08:25,361 - INFO - No improvement for 3 epochs. Best validation loss: 0.948904 at epoch 16
+2025-04-23 07:18:09,171 - INFO - Epoch 20/20, Train Loss: 0.9496, Val Loss: 0.9489
+2025-04-23 07:18:09,186 - INFO - No improvement for 4 epochs. Best validation loss: 0.948904 at epoch 16
+2025-04-23 07:18:09,186 - INFO - Training completed in 11835.30 seconds
+2025-04-23 07:18:09,186 - INFO - Loading best model from epoch 16 for evaluation
+2025-04-23 07:19:23,728 - INFO - Test Loss: 0.948255
+2025-04-23 07:19:23,894 - INFO - Test MSE: 0.948255
+2025-04-23 07:19:23,894 - INFO - Test RMSE: 0.973784
+2025-04-23 07:19:23,894 - INFO - Test MAE: 0.813179
+Traceback (most recent call last):
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/02_train_model.py", line 938, in <module>
+    main()
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/02_train_model.py", line 915, in main
+    train_model(
+  File "/u/mbanisharifdehkordi/Github/GNN_4_IO_3/scripts/02_train_model.py", line 489, in train_model
+    json.dump(metrics, f, indent=2)
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/sw/spack/deltas11-2023-03/apps/linux-rhel8-zen3/gcc-11.4.0/python-3.12.1-ahcgi2c/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type float32 is not JSON serializable

@@ -5,11 +5,11 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
+#SBATCH --cpus-per-task=12
+#SBATCH --mem=32G
 #SBATCH --time=01:00:00
-#SBATCH --output=logs/slurm/experiment_6/preprocess_adv_feat_%j.out
-#SBATCH --error=logs/slurm/experiment_6/preprocess_adv_feat_%j.err
+#SBATCH --output=logs/slurm/experiment_10/preprocess_adv_feat_%j.out
+#SBATCH --error=logs/slurm/experiment_10/preprocess_adv_feat_%j.err
 
 # Load modules
 # module load anaconda3
@@ -22,7 +22,7 @@ source activate gnn-env
 mkdir -p logs
 
 # Parameters
-MI_THRESHOLD=0.3259
+MI_THRESHOLD=0
 TOP_FEATURES=15
 CONFIG_TAG="mi${MI_THRESHOLD}_top${TOP_FEATURES}"
 

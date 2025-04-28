@@ -1,0 +1,8 @@
+{
+  "batch_size": 16,
+  "dropout": 0.2610996532455085,
+  "hidden_dim": 128,
+  "learning_rate": 0.00402953701816023,
+  "model_type": "gat",
+  "num_layers": 1
+}
